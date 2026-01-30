@@ -6,7 +6,7 @@ spring:
     name: diploma_crm
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/crm_bd
+    url: jdbc:postgresql://localhost:5432/crm_db
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
