@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: diploma_crm
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crm_bd
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # create-drop update validate
+    show-sql: true  # sql logs terminal
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  thymeleaf:
+    cache: false  # changes visible without restart
+
+  servlet:
+    multipart:
+      max-file-size: 10MB  # photo limit
+      max-request-size: 10MB
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    rccl.diploma.crm: DEBUG
