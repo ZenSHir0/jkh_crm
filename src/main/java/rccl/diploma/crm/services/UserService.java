@@ -38,4 +38,14 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.delete(user);
     }
+
+    public void updateUser(User user) {
+        User old_user = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        old_user.setName(user.getName());
+        old_user.setSurname(user.getSurname());
+        old_user.setLastName(user.getLastName());
+        old_user.setPhone(user.getPhone());
+        userRepository.save(old_user);
+    }
 }
