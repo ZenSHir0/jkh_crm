@@ -23,13 +23,25 @@
               <label for="password" class="form-label">Пароль</label>
               <input type="password" class="form-control" id="password" th:field="*{password}" required>
             </div>
-            <div class="mb3">
+            <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" id="email" th:field="*{email}" required>
             </div>
             <div class="mb-3">
-              <label for="fullName" class="form-label">ФИО</label>
-              <input type="text" id="fullName" class="form-control" th:field="*{fullName}" required>
+              <label for="phone" class="form-label">Номер телефона</label>
+              <input type="tel"  class="form-control" id="phone" th:field="*{phone}">
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Имя</label>
+              <input type="text" class="form-control" id="name" th:field="*{name}" required>
+            </div>
+            <div class="mb-3">
+              <label for="surname" class="form-label">Фамилия</label>
+              <input type="text" class="form-control" id="surname" th:field="*{surname}" required>
+            </div>
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Отчество</label>
+              <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
             </div>
             <button type="submit" class="btn btn-success w-100">Зарегистрироваться</button>
           </form>

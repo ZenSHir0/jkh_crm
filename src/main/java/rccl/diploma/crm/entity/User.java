@@ -30,8 +30,17 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(unique = true)
+    private String phone;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String surname;
+
     @Column
-    private String fullName;
+    private String lastName;
 
     @Column
     private String apartment;
@@ -51,11 +60,15 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {return true; }
+    public boolean isAccountNonExpired() { return true; }
     @Override
     public boolean isAccountNonLocked() { return true; }
     @Override
     public boolean isCredentialsNonExpired() { return true; }
     @Override
     public boolean isEnabled() { return enabled; }
+
+    public String getFullName() {
+        return String.format("%s %s %s", this.surname, this.name, this.lastName);
+    }
 }

@@ -17,12 +17,12 @@
     </div>
 </nav>
 <div class="container mt-5">
-    <h1>Добро пожаловать в CRM</h1>
+    <h1>Добро пожаловать в CRM, <span th:text="${#authentication.principal.name}"/> <span th:text="${#authentication.principal.lastName}"/>!</h1>
     <p>Вы вошли как <span th:text="${#authentication.principal.username}"></span></p>
     <a href="/my-requests" class="btn btn-primary">Мои заявки</a>
     <a href="/requests/new" class="btn btn-primary">Создать заявку</a>
     <a href="/profile" class="btn btn-primary">Профиль</a>
-    <a href="/register" class="btn btn-primary">Регистрация</a>
+    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/dashboard" class="btn btn-primary">Панель управления</a>
 </div>
 </body>
 </html>

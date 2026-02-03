@@ -19,7 +19,9 @@ public class DataInitializer {
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
                         .email("admin@admin.com")
-                        .fullName("Администратор")
+                        .name("Максим")
+                        .surname("Марцинкевич")
+                        .lastName("Сергеевич")
                         .role(Role.ADMIN)
                         .enabled(true)
                         .build();
