@@ -1,5 +1,8 @@
 package rccl.diploma.crm.controller;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +24,29 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private boolean isAuthenticated() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+    }
+
+    @GetMapping("/")
+    public String toHome() {
+        return "redirect:/home";
+    }
+
     @GetMapping("/login")
     public String login() {
+        if (isAuthenticated()) {
+            return "redirect:/home";
+        }
         return "login";
     }
 
-
     @GetMapping("/register")
     public String registerForm(Model model) {
+        if (isAuthenticated()) {
+            return "redirect:/home";
+        }
         model.addAttribute("user", new User());
         return "register";
     }
@@ -42,11 +60,6 @@ public class AuthController {
         user.setRole(Role.RESIDENT);
         userRepository.save(user);
         return "redirect:/login";
-    }
-
-    @GetMapping("/")
-    public String home() {
-        return "home";
     }
 
     @GetMapping("/home")
