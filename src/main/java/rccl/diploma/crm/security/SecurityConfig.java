@@ -21,18 +21,17 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/","/login", "/register", "/css/**", "/js/**", "/img/**").permitAll()
-                .requestMatchers("/my-requests","/requests/new","/profile").hasRole("RESIDENT")
-                .requestMatchers("/master/**").hasRole("MASTER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/home", true)
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
                 .permitAll()
             )
             .csrf(AbstractHttpConfigurer::disable);
