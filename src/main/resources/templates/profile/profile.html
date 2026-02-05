@@ -24,7 +24,9 @@
                 <div class="card-header">Личные данные</div>
                 <div class="card-body">
                     <form th:action="@{/profile/update}" method="post" th:object="${user}">
-                        <p>Логин: <span th:field="*{username}" th:text="${user.username}"/></p>
+                        <p>Логин: <span th:text="${user.username}"/>
+                            <input type="text" class="d-none" th:field="*{username}" th:value="${user.username}"/>
+                        </p>
                         <p>Email: <span th:text="${user.email}"/></p>
                         <p>Имя:
                             <span class="view-mode" th:text="${user.name}"/>
