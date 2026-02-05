@@ -9,19 +9,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import rccl.diploma.crm.entity.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
+import rccl.diploma.crm.services.VerificationTokenService;
 
 @Controller
 public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VerificationTokenService verificationTokenService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenService verificationTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.verificationTokenService = verificationTokenService;
     }
 
     private boolean isAuthenticated() {
@@ -56,10 +60,24 @@ public class AuthController {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return "redirect:/register?error=username";
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.RESIDENT);
-        userRepository.save(user);
-        return "redirect:/login";
+        user.setEnabled(false);
+        user = userRepository.save(user);
+
+        verificationTokenService.createAndSendVerificationToken(user);
+
+        return "redirect:/register?success=verification-sent";
+    }
+
+    @GetMapping("/verify")
+    public String verify(@RequestParam String token) {
+        if (verificationTokenService.verifyToken(token)) {
+            return "redirect:/login?success=verified";
+        } else {
+            return "redirect:/login?error=token-expired";
+        }
     }
 
     @GetMapping("/home")

@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: diploma_crm
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+    properties.mail.smtp:
+          auth: true
+          starttls.enable: true
+          ssl.trust: smtp.gmail.com
 
   datasource:
     url: jdbc:postgresql://localhost:5432/crm_db
