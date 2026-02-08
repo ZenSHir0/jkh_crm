@@ -1,4 +1,4 @@
-package rccl.diploma.crm.entity;
+package rccl.diploma.crm.entity.enums;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 public enum Role {

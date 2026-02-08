@@ -3,7 +3,7 @@ package rccl.diploma.crm.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import rccl.diploma.crm.entity.Role;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.services.UserService;
 
 @Controller

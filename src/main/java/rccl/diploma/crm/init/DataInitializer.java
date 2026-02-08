@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import rccl.diploma.crm.entity.Role;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
 

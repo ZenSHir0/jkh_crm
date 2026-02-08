@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import rccl.diploma.crm.entity.Role;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
 import rccl.diploma.crm.services.VerificationTokenService;
