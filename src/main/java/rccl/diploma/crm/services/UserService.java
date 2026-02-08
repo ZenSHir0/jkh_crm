@@ -1,7 +1,7 @@
 package rccl.diploma.crm.services;
 
 import org.springframework.stereotype.Service;
-import rccl.diploma.crm.entity.Role;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
 
@@ -46,6 +46,8 @@ public class UserService {
         old_user.setSurname(user.getSurname());
         old_user.setLastName(user.getLastName());
         old_user.setPhone(user.getPhone());
+        old_user.setBuilding(user.getBuilding());
+        old_user.setApartment(user.getApartment());
         userRepository.save(old_user);
     }
 }

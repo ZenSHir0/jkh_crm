@@ -44,6 +44,16 @@
                             <span class="view-mode" th:text="${user.phone}"/>
                             <input class="mt-1 form-control edit-mode d-none" type="text" name="phone" th:field="*{phone}" th:value="${user.phone}"/>
                         </p>
+                        <div class="mb-3">
+                            <label class="form-label">Дом (улица, номер)</label>
+                            <p class="mb-0 view-mode" th:text="${user.building ?: 'Не указан'}"></p>
+                            <input class="form-control edit-mode d-none" type="text" th:field="*{building}" placeholder="ул. Ленина, 10" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Квартира</label>
+                            <p class="mb-0 view-mode" th:text="${user.apartment ?: 'Не указана'}"></p>
+                            <input class="form-control edit-mode d-none" type="text" th:field="*{apartment}" placeholder="45" />
+                        </div>
                         <button type="button" id="editBtn" class="btn btn-primary btn-sm" onclick="enableEdit()">Редактировать</button>
                         <button type="submit" id="saveBtn" class="btn btn-success btn-sm d-none" onclick="cancelEdit()">Сохранить</button>
                         <button type="button" id="cancelBtn" class="btn btn-danger btn-sm d-none" onclick="cancelEdit()">Отменить</button>
