@@ -16,6 +16,7 @@ public class EmailService {
 
     public void sendVerificationEmail(User user, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(System.getenv("GMAIL_USERNAME"));
         message.setTo(user.getEmail());
         message.setSubject("Подтверждение почты в системе CRM");
         message.setText("Ку, " + user.getFullName() + "!\n\n" +

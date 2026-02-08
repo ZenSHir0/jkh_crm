@@ -68,13 +68,13 @@ public class AuthController {
 
         verificationTokenService.createAndSendVerificationToken(user);
 
-        return "redirect:/register?success=verification-sent";
+        return "redirect:/register?verification-sent";
     }
 
     @GetMapping("/verify")
     public String verify(@RequestParam String token) {
         if (verificationTokenService.verifyToken(token)) {
-            return "redirect:/login?success=verified";
+            return "redirect:/login?verified=success";
         } else {
             return "redirect:/login?error=token-expired";
         }
