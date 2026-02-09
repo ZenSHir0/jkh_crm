@@ -24,11 +24,11 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resident_id", nullable = false)
-    private User resident_id;
+    private User resident;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "master_id", nullable = false)
-    private User master_id;
+    private User master;
 
     @Column(nullable = false)
     private String title;
