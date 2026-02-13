@@ -15,6 +15,7 @@ import rccl.diploma.crm.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Configuration
@@ -36,7 +37,7 @@ public class DataInitializer {
                         .build();
                 userRepository.save(admin);
             }
-            if (userRepository.findByRole(Role.RESIDENT).isEmpty()) {
+            if (userRepository.findAllByRole(Role.RESIDENT).isEmpty()) {
                 User resident = User.builder()
                         .username("resident")
                         .password(passwordEncoder.encode("res"))
@@ -45,10 +46,11 @@ public class DataInitializer {
                         .surname("Бондаренко")
                         .lastName("Евгенич")
                         .role(Role.RESIDENT)
+                        .enabled(true)
                         .build();
                 userRepository.save(resident);
             }
-            if (userRepository.findByRole(Role.MASTER).isEmpty()) {
+            if (userRepository.findAllByRole(Role.MASTER).isEmpty()) {
                 User master = User.builder()
                         .username("master")
                         .password(passwordEncoder.encode("mas"))
@@ -56,7 +58,8 @@ public class DataInitializer {
                         .name("Владимир")
                         .surname("Бандера")
                         .lastName("Васильевич")
-                        .role(Role.RESIDENT)
+                        .role(Role.MASTER)
+                        .enabled(true)
                         .build();
                 userRepository.save(master);
             }
@@ -67,22 +70,24 @@ public class DataInitializer {
     public CommandLineRunner initRequests(RequestRepository requestRepository, UserRepository userRepository) {
         return args -> {
             if (requestRepository.findAll().isEmpty()) {
-
-                List<User> users = userRepository.findAll();
-                if (users.isEmpty()){
+                List<User> residents = userRepository.findAllByRole(Role.RESIDENT);
+                List<User> masters = userRepository.findAllByRole(Role.MASTER);
+                if (residents.isEmpty()){
                     return;
                 }
                 Random random = new Random();
                 List<RequestType> types = Arrays.asList(RequestType.values());
                 List<RequestStatus> statuses = Arrays.asList(RequestStatus.values());
 
-                for (int i = 0; i < 5; i++) {
-                    User resident = users.get(random.nextInt(users.size()));  // рандомный житель
-                    User master = random.nextBoolean() ? users.get(random.nextInt(users.size())) : null;  // мастер или null
+                for (int i = 0; i < 20; i++) {
+                    User resident = residents.get(random.nextInt(residents.size()));  // рандомный житель
+                    Optional<User> master = random.nextBoolean() && !masters.isEmpty()
+                            ? Optional.of(masters.get(random.nextInt(masters.size())))
+                            : Optional.empty();
 
                     Request request = Request.builder()
                             .resident(resident)
-                            .master(master)
+                            .master(master.orElse(null))
                             .title("Тестовая заявка #" + (i + 1))
                             .description("Рандомное описание: проблема с " + types.get(random.nextInt(types.size())).getDisplayName().toLowerCase())
                             .type(types.get(random.nextInt(types.size())))

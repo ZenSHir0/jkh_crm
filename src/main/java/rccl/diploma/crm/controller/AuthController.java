@@ -68,7 +68,7 @@ public class AuthController {
 
         verificationTokenService.createAndSendVerificationToken(user);
 
-        return "redirect:/register?verification-sent";
+        return "redirect:/register?verificationsent";
     }
 
     @GetMapping("/verify")

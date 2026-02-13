@@ -16,5 +16,85 @@
         </ul>
     </div>
 </nav>
+<div class="container mt-4">
+    <h2>Список заявок</h2>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="status" class="form-label">Статус</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="">Все</option>
+                    <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.displayName}"></option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="type" class="form-label">Тип</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Все</option>
+                    <option th:each="type : ${types}" th:value="${type}" th:text="${type.displayName}"></option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="startDate" class="form-label">Дата от</label>
+                <input type="date" id="startDate" name="startDate" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <label for="endDate" class="form-label">Дата до</label>
+                <input type="date" id="endDate" name="endDate" class="form-control">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Житель</th>
+            <th>Заголовок</th>
+            <th>Тип</th>
+            <th>Статус</th>
+            <th>Дата создания</th>
+            <th>Мастер</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="request : ${requests}">
+            <td th:text="${request.id}"></td>
+            <td th:text="${request.resident.fullName}"></td>
+            <td th:text="${request.title}"></td>
+            <td th:text="${request.type.displayName}"></td>
+            <td>
+                <span class="badge" th:classappend="${request.status.badgeClass}" th:text="${request.status.displayName}"></span>
+            </td>
+            <td th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+            <td th:text="${request.master?.fullName ?: 'Не назначен'}"></td>
+            <td>
+                <a th:href="@{/admin/requests/{id}(id=${request.id})}" class="btn btn-sm btn-info">Детали</a>
+                <button class="btn btn-sm btn-primary">Назначить мастера</button>
+                <button class="btn btn-sm btn-warning">Изменить статус</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:if="${currentPage > 0}">
+                <a class="page-link" th:href="@{/admin/requests(page=${currentPage - 1})}">Предыдущая</a>
+            </li>
+            <li th:each="p : ${#numbers.sequence(0, totalPages - 1)}" class="page-item" th:classappend="${p == currentPage ? 'active' : ''}">
+                <a class="page-link" th:href="@{/admin/requests(page=${p})}" th:text="${p + 1}"></a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                <a class="page-link" th:href="@{/admin/requests(page=${currentPage + 1})}">Следующая</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>

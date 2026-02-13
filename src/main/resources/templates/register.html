@@ -14,7 +14,7 @@
           <h4>Регистрация жителя</h4>
         </div>
         <div class="card-body">
-          <div th:if="param.verification-sent" class="alert alert-success">
+          <div th:if="${param.verificationsent}" class="alert alert-success">
             На вашу почту направлена ссылка для подтверждения создания аккаунта
           </div>
           <form th:action="@{/register}" method="post" th:object="${user}">

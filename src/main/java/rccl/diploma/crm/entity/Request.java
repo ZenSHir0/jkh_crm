@@ -27,7 +27,7 @@ public class Request {
     private User resident;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "master_id", nullable = false)
+    @JoinColumn(name = "master_id", nullable = true)
     private User master;
 
     @Column(nullable = false)
