@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import rccl.diploma.crm.entity.Request;
@@ -14,6 +15,7 @@ import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.RequestType;
 import rccl.diploma.crm.repository.RequestRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Controller
@@ -26,14 +28,15 @@ public class AdminRequestController {
         this.requestRepository = requestRepository;
     }
 
+    //TODO Make filter work with only one date defined
     @GetMapping
     public String listRequests(Model model,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size,
                                @RequestParam(required = false) RequestStatus status,
                                @RequestParam(required = false) RequestType type,
-                               @RequestParam(required = false) LocalDateTime startDate,
-                               @RequestParam(required = false) LocalDateTime endDate) {
+                               @RequestParam(required = false) LocalDate startDate,
+                               @RequestParam(required = false) LocalDate endDate) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
@@ -45,7 +48,7 @@ public class AdminRequestController {
         } else if (type != null) {
             requests = requestRepository.findByType(type, pageable);
         } else if (startDate != null && endDate != null) {
-            requests = requestRepository.findByCreatedAtBetween(startDate, endDate, pageable);
+            requests = requestRepository.findByCreatedAtBetween(startDate.atStartOfDay(), endDate.atStartOfDay(), pageable);
         } else {
             requests = requestRepository.findAll(pageable);
         }
@@ -58,7 +61,16 @@ public class AdminRequestController {
 
         return "admin/requests";
     }
-//
-//    @GetMapping("/{id}")
-//    public String requestDetails(){}
+
+    @GetMapping("/{id}")
+    public String requestDetails(@PathVariable Long id, Model model) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+
+        model.addAttribute("request", request);
+        model.addAttribute("photos", request.getPhotos());
+        model.addAttribute("comments", request.getComments());
+
+        return "admin/request-details";
+    }
 }
