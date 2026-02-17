@@ -27,7 +27,7 @@ public class Request {
     private User resident;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "master_id", nullable = true)
+    @JoinColumn(name = "master_id")
     private User master;
 
     @Column(nullable = false)
@@ -48,9 +48,6 @@ public class Request {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column
-    private LocalDateTime updatedAt;
-
-    @Column
     private LocalDateTime deadline;
 
     @Column
@@ -61,4 +58,9 @@ public class Request {
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RequestComment> comments = new ArrayList<>();
+
+    public void addPhoto(RequestPhoto photo) {
+        photos.add(photo);
+        photo.setRequest(this);
+    }
 }

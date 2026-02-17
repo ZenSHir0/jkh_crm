@@ -3,6 +3,7 @@ package rccl.diploma.crm.services;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import rccl.diploma.crm.dto.RequestDTO;
 import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.RequestPhoto;
 import rccl.diploma.crm.entity.User;
@@ -26,20 +27,27 @@ public class RequestService {
     }
 
     @Transactional
-    public Request createRequest(Request request, User resident, MultipartFile[] files) {
+    public Request createRequestFromDTO(RequestDTO requestDTO, User resident) {
 
-        request.setResident(resident);
-        request.setStatus(RequestStatus.NEW);
-        request.setCreatedAt(LocalDateTime.now());
+        Request request = Request.builder()
+                .resident(resident)
+                .title(requestDTO.getTitle())
+                .description(requestDTO.getDescription())
+                .type(requestDTO.getType())
+                .status(RequestStatus.NEW)
+                .createdAt(LocalDateTime.now())
+                .deadline(LocalDateTime.now().plusDays(1))
+                .build();
 
         Request saved = requestRepository.save(request);
 
+        MultipartFile[] files = requestDTO.getPhotos();
         if (files != null) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     try {
                         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-                        String uploadDir = "uploads/requests/" + saved.getId() + "/";
+                        String uploadDir = System.getProperty("UPLOADS_DIR") + "/requests/" + saved.getId() + "/";
                         Path uploadPath = Paths.get(uploadDir);
                         Files.createDirectories(uploadPath);
                         String fullPath = uploadDir + fileName;
@@ -54,7 +62,7 @@ public class RequestService {
                                 .uploadedBy(resident)
                                 .build();
 
-                        //saved.addPhoto(photo);
+                        saved.addPhoto(photo);
                     } catch (IOException e) {
                         throw new RuntimeException("Ошибка загрузки фото", e);
                     }
