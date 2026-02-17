@@ -32,7 +32,7 @@ public class RequestPhoto {
     @JoinColumn(name = "uploaded_by_id", nullable = false)
     private User uploadedBy;
 
-    @Column(length = 255)
+    @Column
     private String originalFileName;
 
     @Column
