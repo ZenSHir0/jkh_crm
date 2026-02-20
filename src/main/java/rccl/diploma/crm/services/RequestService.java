@@ -27,7 +27,7 @@ public class RequestService {
     }
 
     @Transactional
-    public Request createRequestFromDTO(RequestDTO requestDTO, User resident) {
+    public void createRequestFromDTO(RequestDTO requestDTO, User resident) {
 
         Request request = Request.builder()
                 .resident(resident)
@@ -47,7 +47,7 @@ public class RequestService {
                 if (!file.isEmpty()) {
                     try {
                         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-                        String uploadDir = System.getProperty("UPLOADS_DIR") + "/requests/" + saved.getId() + "/";
+                        String uploadDir = System.getenv("UPLOADS_DIR") + "/requests/" + saved.getId() + "/";
                         Path uploadPath = Paths.get(uploadDir);
                         Files.createDirectories(uploadPath);
                         String fullPath = uploadDir + fileName;
@@ -60,6 +60,7 @@ public class RequestService {
                                 .fileSize(file.getSize())
                                 .contentType(file.getContentType())
                                 .uploadedBy(resident)
+                                .uploadedAt(LocalDateTime.now())
                                 .build();
 
                         saved.addPhoto(photo);
@@ -71,6 +72,5 @@ public class RequestService {
             }
             requestRepository.save(saved);
         }
-        return saved;
     }
 }

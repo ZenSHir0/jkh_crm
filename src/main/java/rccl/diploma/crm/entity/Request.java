@@ -54,13 +54,17 @@ public class Request {
     private LocalDateTime closedAt;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<RequestPhoto> photos = new ArrayList<>();
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<RequestComment> comments = new ArrayList<>();
 
     public void addPhoto(RequestPhoto photo) {
-        photos.add(photo);
-        photo.setRequest(this);
+        if (photo != null){
+            photos.add(photo);
+            photo.setRequest(this);
+        }
     }
 }

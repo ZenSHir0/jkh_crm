@@ -20,9 +20,10 @@
 <div class="container mt-4">
     <h2>Подать новую заявку</h2>
 
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-    <form th:object="${requestDTO}" th:action="@{/requests/new}" method="post" enctype="multipart/form-data">
+    <form th:object="${request}" th:action="@{/requests/new}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title" class="form-label">Заголовок заявки</label>
             <input type="text" class="form-control" id="title" th:field="*{title}" required>
