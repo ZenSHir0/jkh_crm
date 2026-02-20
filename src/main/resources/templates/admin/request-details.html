@@ -45,7 +45,6 @@
             <div th:if="${photos.isEmpty()}">Фото нет</div>
             <div th:each="photo : ${photos}" class="mb-3">
                 <img th:src="@{${photo.filePath}}" alt="Фото" class="img-fluid" style="max-width: 300px;">
-                <p th:text="${photo.originalFileName} + ' (' + ${photo.uploadedAt.format('dd.MM.yyyy HH:mm')} + ')'"></p>
             </div>
         </div>
     </div>

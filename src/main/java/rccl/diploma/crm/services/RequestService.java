@@ -11,19 +11,17 @@ import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.repository.RequestRepository;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 public class RequestService {
 
     private final RequestRepository requestRepository;
+    private final FileStroageService fileStorageService;
 
-    public RequestService(RequestRepository requestRepository) {
+    public RequestService(RequestRepository requestRepository, FileStroageService fileStorageService) {
         this.requestRepository = requestRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Transactional
@@ -42,20 +40,16 @@ public class RequestService {
         Request saved = requestRepository.save(request);
 
         MultipartFile[] files = requestDTO.getPhotos();
-        if (files != null) {
+        if (files != null && files.length > 0) {
+            String subDir = "requests/" + saved.getId();
+
             for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    try {
-                        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-                        String uploadDir = System.getenv("UPLOADS_DIR") + "/requests/" + saved.getId() + "/";
-                        Path uploadPath = Paths.get(uploadDir);
-                        Files.createDirectories(uploadPath);
-                        String fullPath = uploadDir + fileName;
-                        file.transferTo(Paths.get(fullPath));
+                String relativePath = fileStorageService.saveFile(file, subDir);
+                if (relativePath != null) {
 
                         RequestPhoto photo = RequestPhoto.builder()
                                 .request(saved)
-                                .filePath("/" + fullPath)
+                                .filePath(relativePath)
                                 .originalFileName(file.getOriginalFilename())
                                 .fileSize(file.getSize())
                                 .contentType(file.getContentType())
@@ -64,10 +58,6 @@ public class RequestService {
                                 .build();
 
                         saved.addPhoto(photo);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Ошибка загрузки фото", e);
-                    }
-
                 }
             }
             requestRepository.save(saved);
