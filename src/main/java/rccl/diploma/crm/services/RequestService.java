@@ -1,6 +1,10 @@
 package rccl.diploma.crm.services;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import rccl.diploma.crm.dto.RequestDTO;
@@ -62,5 +66,10 @@ public class RequestService {
             }
             requestRepository.save(saved);
         }
+    }
+
+    public Page<Request> getRequestsByResident(User resident, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return requestRepository.findByResident(resident, pageable);
     }
 }

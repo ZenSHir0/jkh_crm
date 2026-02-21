@@ -1,6 +1,7 @@
 package rccl.diploma.crm.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import rccl.diploma.crm.dto.RequestDTO;
+import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestType;
 import rccl.diploma.crm.repository.UserRepository;
@@ -56,5 +58,22 @@ public class RequestController {
             redirectAttributes.addFlashAttribute("error", "Не удалось создать заявку: " + e.getMessage());
             return "redirect:/requests/new";
         }
+    }
+
+    @GetMapping("/my")
+    public String myRequests(Model model, Authentication authentication,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "10") int size) {
+
+        String username = authentication.getName();
+        User resident = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        Page<Request> requests = requestService.getRequestsByResident(resident, page, size);
+        model.addAttribute("requests", requests.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", requests.getTotalPages());
+
+        return "requests/my";
     }
 }
