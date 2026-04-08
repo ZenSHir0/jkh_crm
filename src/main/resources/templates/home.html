@@ -22,7 +22,7 @@
     <a href="/requests/my" class="btn btn-primary">Мои заявки</a>
     <a href="/requests/new" class="btn btn-primary">Создать заявку</a>
     <a href="/profile" class="btn btn-primary">Профиль</a>
-    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/dashboard" class="btn btn-primary">Панель управления</a>
+    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/dashboard" class="btn btn-primary">Список пользователей</a>
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/requests" class="btn btn-primary">Список заявок</a>
 </div>
 </body>

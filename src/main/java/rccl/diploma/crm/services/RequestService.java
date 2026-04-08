@@ -14,16 +14,15 @@ import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.repository.RequestRepository;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
 public class RequestService {
 
     private final RequestRepository requestRepository;
-    private final FileStroageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
-    public RequestService(RequestRepository requestRepository, FileStroageService fileStorageService) {
+    public RequestService(RequestRepository requestRepository, FileStorageService fileStorageService) {
         this.requestRepository = requestRepository;
         this.fileStorageService = fileStorageService;
     }

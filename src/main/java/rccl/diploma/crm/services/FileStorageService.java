@@ -10,11 +10,11 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-public class FileStroageService {
+public class FileStorageService {
 
     private final String baseUploadDir;
 
-    public FileStroageService() {
+    public FileStorageService() {
         this.baseUploadDir = System.getenv("UPLOADS_DIR");
         if (baseUploadDir == null) {
             throw new RuntimeException("UPLOADS_DIR environment variable is not set");
