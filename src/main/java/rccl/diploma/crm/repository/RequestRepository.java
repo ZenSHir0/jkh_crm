@@ -10,16 +10,16 @@ import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.RequestType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
-    //TODO understand what is Pageable
     Page<Request> findByStatus(RequestStatus status, Pageable pageable);
     Page<Request> findByType(RequestType type, Pageable pageable);
     Page<Request> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
     Page<Request> findByResident(User resident, Pageable pageable);
-
+    List<Request> findTop10ByResidentOrderByCreatedAtDesc(User resident);
     Page<Request> findByStatusAndType(RequestStatus status, RequestType type, Pageable pageable);
 
 }
