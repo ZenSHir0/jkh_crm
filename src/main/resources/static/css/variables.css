@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Nunito:wght@400;500;600&display=swap');
+
+:root {
+    /* Типографика */
+    --bs-body-font-family:      'Nunito', sans-serif;
+    --bs-body-font-size:        1rem;
+    --bs-body-font-weight:      400;
+    --bs-body-line-height:      1.6;
+
+    /* Цвета фона и текста */
+    --bs-body-bg:               #F5F4F0;
+    --bs-body-color:            #26215C;
+    --bs-secondary-bg:          #EEEDFE;
+    --bs-tertiary-bg:           #E3E1FA;
+
+    /* Акцентные цвета Bootstrap */
+    --bs-primary:               #534AB7;
+    --bs-primary-rgb:           83, 74, 183;
+    --bs-success:               #1D9E75;
+    --bs-success-rgb:           29, 158, 117;
+    --bs-danger:                #B74141;
+    --bs-warning:               #D19A2A;
+    --bs-info:                  #534AB7;
+
+    /* Бордеры */
+    --bs-border-color:          #D9D7F0;
+    --bs-border-radius:         10px;
+    --bs-border-radius-sm:      6px;
+    --bs-border-radius-lg:      16px;
+    --bs-border-radius-xl:      20px;
+    --bs-border-radius-pill:    50rem;
+
+    /* Карточки */
+    --bs-card-bg:               #FFFFFF;
+    --bs-card-border-color:     #D9D7F0;
+    --bs-card-border-radius:    var(--bs-border-radius-lg);
+    --bs-card-cap-bg:           #FFFFFF;
+    --bs-card-cap-padding-y:    1rem;
+    --bs-card-cap-padding-x:    1.5rem;
+    --bs-card-inner-border-radius: 15px;
+
+    /* Кнопки */
+    --bs-btn-font-family:       'Nunito', sans-serif;
+    --bs-btn-font-weight:       600;
+    --bs-btn-border-radius:     var(--bs-border-radius);
+    --bs-btn-padding-x:         1.1rem;
+    --bs-btn-padding-y:         0.45rem;
+    --bs-btn-font-size:         0.875rem;
+
+    /* Таблицы */
+    --bs-table-border-color:    #D9D7F0;
+    --bs-table-striped-bg:      #EEEDFE;
+
+    /* Навбар */
+    --bs-navbar-padding-y:      0;
+
+    /* Формы */
+    --bs-input-bg:              #FFFFFF;
+    --bs-input-border-color:    #D9D7F0;
+    --bs-input-focus-border-color: #534AB7;
+    --bs-input-focus-box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.14);
+    --bs-input-border-radius:   var(--bs-border-radius);
+
+    /* Наши токены */
+    --accent:                   #534AB7;
+    --accent-light:             #EEEDFE;
+    --accent-dark:              #3C3489;
+    --text-muted-custom:        #6F6A99;
+    --success-bg:               #DDF6EE;
+    --warning-bg:               #F8EDD1;
+    --danger-bg:                #FCEAEA;
+    --danger:                   #A32D2D;
+}

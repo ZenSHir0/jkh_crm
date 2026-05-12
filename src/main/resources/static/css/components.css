@@ -1,0 +1,160 @@
+/* ============================================================
+   ПОЛЯ (field-row)
+   ============================================================ */
+.field-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bs-border-color);
+    gap: 1rem;
+    min-height: 44px;
+}
+
+.field-row:last-child { border-bottom: none; }
+
+.field-row .form-control {
+    padding: 2px 6px;
+    font-size: 0.95rem;
+    margin: 0;
+    height: 26px;
+}
+
+.field-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted-custom);
+    min-width: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+}
+
+.field-value {
+    font-size: 0.95rem;
+    color: var(--bs-body-color);
+    flex: 1;
+    font-weight: 500;
+}
+
+.field-value.muted {
+    color: var(--text-muted-custom);
+    font-weight: 400;
+    font-style: italic;
+}
+
+.field-divider {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--bs-body-color);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 16px 0 8px;
+    margin-top: 8px;
+}
+
+.btn-group-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+
+/* ============================================================
+   СТАТУС-БЕЙДЖИ
+   ============================================================ */
+.status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--bs-border-radius-pill);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-new    { background: var(--accent-light); color: var(--accent-dark); }
+.status-wait   { background: var(--warning-bg);   color: #854F0B; }
+.status-active { background: var(--success-bg);   color: #0F6E56; }
+.status-done   { background: var(--bs-secondary-bg); color: var(--text-muted-custom); }
+.status-danger { background: var(--danger-bg);    color: var(--danger); }
+
+
+/* ============================================================
+   ACTION КНОПКИ (sidebar-ссылки)
+   ============================================================ */
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--bs-border-radius);
+    text-decoration: none;
+    color: var(--bs-body-color);
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    margin-bottom: 10px;
+    transition: all 0.15s;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.action-btn:last-child { margin-bottom: 0; }
+
+.action-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(3px);
+}
+
+.action-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.action-icon.blue  { background: var(--accent-light); }
+.action-icon.green { background: var(--success-bg); }
+.action-icon.amber { background: var(--warning-bg); }
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-muted-custom);
+}
+
+.empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.4;
+}
+
+.empty-state p { margin: 0; font-size: 0.9rem; }
+
+
+/* ============================================================
+   ERROR TOAST
+   ============================================================ */
+.error-toast {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger);
+    border-radius: var(--bs-border-radius);
+    color: var(--danger);
+    padding: 12px 16px;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.error-toast p {
+    margin: 0;
+    line-height: 1.8;
+}

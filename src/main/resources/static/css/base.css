@@ -1,0 +1,127 @@
+/* ============================================================
+   BOOTSTRAP КОМПОНЕНТНЫЕ ОВЕРРАЙДЫ
+   ============================================================ */
+
+.navbar {
+    height: 56px;
+    background: #1A1A2E !important;
+}
+
+.navbar-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: #fff !important;
+}
+
+.navbar-brand span { color: var(--accent); }
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    padding: 6px 14px !important;
+    transition: all 0.15s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav .nav-link.logout {
+    color: #F09595 !important;
+    border: 1px solid rgba(240, 149, 149, 0.3);
+}
+
+.navbar-nav .nav-link.logout:hover {
+    background: rgba(240, 149, 149, 0.15);
+}
+
+.card-header {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted-custom);
+    border-bottom-color: var(--bs-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-primary {
+    --bs-btn-bg:                 #534AB7;
+    --bs-btn-border-color:       #534AB7;
+    --bs-btn-hover-bg:           #3C3489;
+    --bs-btn-hover-border-color: #3C3489;
+    --bs-btn-active-bg:          #26215C;
+    --bs-btn-color:              #fff;
+}
+
+.btn-success {
+    --bs-btn-bg:                 #1D9E75;
+    --bs-btn-border-color:       #1D9E75;
+    --bs-btn-hover-bg:           #0f6e56;
+    --bs-btn-hover-border-color: #0f6e56;
+    --bs-btn-color:              #fff;
+}
+
+.btn-soft-primary {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: none;
+}
+
+.btn-soft-primary:hover {
+    background: #D9D7F5;
+    color: var(--accent-dark);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.14);
+}
+
+.table > thead {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted-custom);
+    background: var(--bs-body-bg);
+}
+
+.table > :not(caption) > * > * {
+    padding: 14px 1rem;
+}
+
+.table-hover > tbody > tr:hover > * {
+    background-color: var(--accent-light);
+    color: var(--bs-body-color);
+}
+
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.page-wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 700px) {
+    .main-grid { grid-template-columns: 1fr; }
+}
