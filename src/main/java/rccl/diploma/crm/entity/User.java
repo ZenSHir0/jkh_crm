@@ -1,6 +1,8 @@
 package rccl.diploma.crm.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +34,8 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Pattern(regexp = "\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}",
+            message = "Неверный формат телефона")
     @Column(unique = true)
     private String phone;
 
@@ -43,6 +47,8 @@ public class User implements UserDetails {
 
     @Column
     private String lastName;
+
+    @Pattern(regexp = "^\\d+$", message = "Квартира должна быть числом")
     @Column
     private String apartment;
 

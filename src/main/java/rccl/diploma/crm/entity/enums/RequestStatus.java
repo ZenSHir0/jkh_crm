@@ -21,12 +21,12 @@ public enum RequestStatus {
     // Опционально: метод для цвета в таблице (Bootstrap-классы)
     public String getBadgeClass() {
         return switch (this) {
-            case NEW -> "bg-primary";          // синий — новая
-            case IN_PROGRESS -> "bg-warning";  // жёлтый — в работе
-            case DONE -> "bg-success";         // зелёный — выполнена
-            case REJECTED -> "bg-danger";      // красный — отклонена
-            case CANCELLED -> "bg-secondary";  // серый — отменена
-            case ON_HOLD -> "bg-info";         // голубой — на паузе
+            case NEW -> "status-new";          // синий — новая
+            case IN_PROGRESS -> "status-wait";  // жёлтый — в работе
+            case DONE -> "status-active";         // зелёный — выполнена
+            case REJECTED -> "status-danger";      // красный — отклонена
+            case CANCELLED -> "status-done";  // серый — отменена
+            case ON_HOLD -> "status-wait";         // голубой — на паузе
         };
     }
 }

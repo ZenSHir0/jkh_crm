@@ -15,6 +15,7 @@ import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.repository.RequestRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RequestService {
@@ -50,17 +51,17 @@ public class RequestService {
                 String relativePath = fileStorageService.saveFile(file, subDir);
                 if (relativePath != null) {
 
-                        RequestPhoto photo = RequestPhoto.builder()
-                                .request(saved)
-                                .filePath(relativePath)
-                                .originalFileName(file.getOriginalFilename())
-                                .fileSize(file.getSize())
-                                .contentType(file.getContentType())
-                                .uploadedBy(resident)
-                                .uploadedAt(LocalDateTime.now())
-                                .build();
+                    RequestPhoto photo = RequestPhoto.builder()
+                            .request(saved)
+                            .filePath(relativePath)
+                            .originalFileName(file.getOriginalFilename())
+                            .fileSize(file.getSize())
+                            .contentType(file.getContentType())
+                            .uploadedBy(resident)
+                            .uploadedAt(LocalDateTime.now())
+                            .build();
 
-                        saved.addPhoto(photo);
+                    saved.addPhoto(photo);
                 }
             }
             requestRepository.save(saved);
@@ -71,4 +72,9 @@ public class RequestService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return requestRepository.findByResident(resident, pageable);
     }
+
+    public List<Request> getLastRequestsByResident(User resident) {
+        return requestRepository.findTop10ByResidentOrderByCreatedAtDesc(resident);
+    }
 }
+
