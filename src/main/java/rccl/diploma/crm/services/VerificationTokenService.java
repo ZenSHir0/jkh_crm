@@ -18,7 +18,7 @@ public class VerificationTokenService {
     private final EmailService emailService;
     private final UserRepository userRepository;
 
-    public void createAndSendVerificationToken(User user) {
+    private String createVerificationToken(User user) {
 
         verificationTokenRepository.deleteByUser(user);
 
@@ -32,8 +32,14 @@ public class VerificationTokenService {
                 .build();
 
         verificationTokenRepository.save(verificationToken);
-
         user.getVerificationTokens().add(verificationToken);
+
+        return token;
+    }
+
+    public void createAndSendVerificationToken(User user) {
+
+        String token = createVerificationToken(user);
 
         emailService.sendVerificationEmail(user, token);
     }
