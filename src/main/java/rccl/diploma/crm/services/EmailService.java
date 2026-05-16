@@ -19,9 +19,20 @@ public class EmailService {
         message.setFrom(System.getenv("GMAIL_USERNAME"));
         message.setTo(user.getEmail());
         message.setSubject("Подтверждение почты в системе CRM");
-        message.setText("Ку, " + user.getFullName() + "!\n\n" +
+        message.setText("Здравствуйте, " + user.getFullName() + "!\n\n" +
                 "Чтобы активировать аккаунт, перейди по ссылке: http://localhost:8080/verify?token=" + token + "\n\n" +
                 "Ссылка действительна 24 часа.");
+        mailSender.send(message);
+    }
+
+    public void sendConfirmationEmail(User user, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(System.getenv("GMAIL_USERNAME"));
+        message.setTo(user.getEmail());
+        message.setSubject("Сброс пароля");
+        message.setText("Здравствуйте, " + user.getFullName() + "! Кто-то запросил ссылку для изменения пароля вашего аккаунта в ЖКХ.CRM, если это были не вы просто проигнорируйте данное сообщение.\n\n" +
+                "Для сброса пароля перейди по ссылке: http://localhost:8080/reset-password?token=" + token + "\n\n" +
+                "Ссылка действительна 1 час.");
         mailSender.send(message);
     }
 }
