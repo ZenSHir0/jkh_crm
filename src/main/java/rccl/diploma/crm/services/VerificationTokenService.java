@@ -15,11 +15,9 @@ import java.util.UUID;
 public class VerificationTokenService {
 
     private final VerificationTokenRepository verificationTokenRepository;
-    private final EmailService emailService;
     private final UserRepository userRepository;
 
-    private String createVerificationToken(User user) {
-
+    private String createToken(User user, long active_hours) {
         verificationTokenRepository.deleteByUser(user);
 
         String token = UUID.randomUUID().toString();
@@ -27,7 +25,7 @@ public class VerificationTokenService {
         VerificationToken verificationToken = VerificationToken.builder()
                 .token(token)
                 .user(user)
-                .expiryDate(LocalDateTime.now().plusHours(24))
+                .expiryDate(LocalDateTime.now().plusHours(active_hours))
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -37,15 +35,15 @@ public class VerificationTokenService {
         return token;
     }
 
-    public void sendVerificationToken(User user) {
+    public String createVerificationToken(User user) {
+        return createToken(user, 24);
+    }
 
-        String token = createVerificationToken(user);
-
-        emailService.sendVerificationEmail(user, token);
+    public String createPasswordResetToken(User user) {
+        return createToken(user, 1);
     }
 
     public boolean verifyToken(String token) {
-
         VerificationToken vt = verificationTokenRepository.findByToken(token)
                 .orElse(null);
 
@@ -62,4 +60,5 @@ public class VerificationTokenService {
         verificationTokenRepository.delete(vt);
         return true;
     }
+
 }
