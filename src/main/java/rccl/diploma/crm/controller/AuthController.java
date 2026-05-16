@@ -66,7 +66,7 @@ public class AuthController {
         user.setEnabled(false);
         user = userRepository.save(user);
 
-        verificationTokenService.createAndSendVerificationToken(user);
+        verificationTokenService.sendVerificationToken(user);
 
         return "redirect:/register?verificationsent";
     }
