@@ -37,7 +37,7 @@ public class VerificationTokenService {
         return token;
     }
 
-    public void createAndSendVerificationToken(User user) {
+    public void sendVerificationToken(User user) {
 
         String token = createVerificationToken(user);
 
