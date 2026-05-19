@@ -102,6 +102,7 @@ public class RequestService {
         request.setStatus(RequestStatus.IN_PROGRESS);
         request.setMaster(master);
         requestRepository.save(request);
+        logComment(request, master, "Заявка взята в работу");
     }
 
     @Transactional
@@ -114,6 +115,7 @@ public class RequestService {
         request.setStatus(RequestStatus.IN_PROGRESS);
         request.setClosedAt(null);
         requestRepository.save(request);
+        logComment(request, master, "Заявка возобновлена");
     }
 
     @Transactional
@@ -126,6 +128,7 @@ public class RequestService {
         request.setStatus(RequestStatus.DONE);
         request.setClosedAt(LocalDateTime.now());
         requestRepository.save(request);
+        logComment(request, master, "Работа выполнена");
     }
 
     @Transactional
@@ -138,27 +141,23 @@ public class RequestService {
         request.setStatus(RequestStatus.REJECTED);
         request.setClosedAt(LocalDateTime.now());
         requestRepository.save(request);
-
-        RequestComment comment = RequestComment.builder()
-                .request(request)
-                .author(master)
-                .text("Причина отказа: " + reason)
-                .createdAt(LocalDateTime.now())
-                .build();
-        commentRepository.save(comment);
+        logComment(request, master, "Причина отказа: " + reason);
     }
 
     @Transactional
     public void addComment(Long id, User author, String text) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
-        RequestComment comment = RequestComment.builder()
+        logComment(request, author, text);
+    }
+
+    private void logComment(Request request, User author, String text) {
+        commentRepository.save(RequestComment.builder()
                 .request(request)
                 .author(author)
                 .text(text)
                 .createdAt(LocalDateTime.now())
-                .build();
-        commentRepository.save(comment);
+                .build());
     }
 
     public Request getRequestByIdForUser(Long id, User currentUser) {
