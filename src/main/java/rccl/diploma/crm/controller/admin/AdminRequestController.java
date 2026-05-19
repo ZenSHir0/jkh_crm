@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +37,6 @@ public class AdminRequestController {
         this.userRepository = userRepository;
     }
 
-    //TODO Make filter work with only one date defined
     @GetMapping
     public String listRequests(Model model,
                                @RequestParam(defaultValue = "0") int page,
@@ -48,24 +48,31 @@ public class AdminRequestController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        Page<Request> requests;
-        if (status != null && type != null) {
-            requests = requestRepository.findByStatusAndType(status, type, pageable);
-        } else if (status != null) {
-            requests = requestRepository.findByStatus(status, pageable);
-        } else if (type != null) {
-            requests = requestRepository.findByType(type, pageable);
-        } else if (startDate != null && endDate != null) {
-            requests = requestRepository.findByCreatedAtBetween(startDate.atStartOfDay(), endDate.atStartOfDay(), pageable);
-        } else {
-            requests = requestRepository.findAll(pageable);
+        Specification<Request> spec = Specification.where(null);
+        if (status != null) {
+            spec = spec.and((root, q, cb) -> cb.equal(root.get("status"), status));
         }
+        if (type != null) {
+            spec = spec.and((root, q, cb) -> cb.equal(root.get("type"), type));
+        }
+        if (startDate != null) {
+            spec = spec.and((root, q, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), startDate.atStartOfDay()));
+        }
+        if (endDate != null) {
+            spec = spec.and((root, q, cb) -> cb.lessThan(root.get("createdAt"), endDate.plusDays(1).atStartOfDay()));
+        }
+
+        Page<Request> requests = requestRepository.findAll(spec, pageable);
 
         model.addAttribute("requests", requests.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", requests.getTotalPages());
         model.addAttribute("statuses", RequestStatus.values());
         model.addAttribute("types", RequestType.values());
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("selectedType", type);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
 
         return "admin/requests";
     }

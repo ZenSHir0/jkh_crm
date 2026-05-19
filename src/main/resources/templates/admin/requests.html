@@ -12,31 +12,44 @@
     <h2>Список заявок</h2>
 
     <form method="get" class="mb-4">
-        <div class="row">
+        <div class="row g-2 align-items-end">
             <div class="col-md-3">
                 <label for="status" class="form-label">Статус</label>
                 <select id="status" name="status" class="form-select">
                     <option value="">Все</option>
-                    <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.displayName}"></option>
+                    <option th:each="s : ${statuses}"
+                            th:value="${s}"
+                            th:text="${s.displayName}"
+                            th:selected="${s == selectedStatus}">
+                    </option>
                 </select>
             </div>
             <div class="col-md-3">
                 <label for="type" class="form-label">Тип</label>
                 <select id="type" name="type" class="form-select">
                     <option value="">Все</option>
-                    <option th:each="type : ${types}" th:value="${type}" th:text="${type.displayName}"></option>
+                    <option th:each="t : ${types}"
+                            th:value="${t}"
+                            th:text="${t.displayName}"
+                            th:selected="${t == selectedType}">
+                    </option>
                 </select>
             </div>
             <div class="col-md-2">
                 <label for="startDate" class="form-label">Дата от</label>
-                <input type="date" id="startDate" name="startDate" class="form-control">
+                <input type="date" id="startDate" name="startDate" class="form-control"
+                       th:value="${startDate}">
             </div>
             <div class="col-md-2">
                 <label for="endDate" class="form-label">Дата до</label>
-                <input type="date" id="endDate" name="endDate" class="form-control">
+                <input type="date" id="endDate" name="endDate" class="form-control"
+                       th:value="${endDate}">
             </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary">Применить фильтр</button>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">Найти</button>
+            </div>
+            <div class="col-md-1">
+                <a href="/admin/requests" class="btn btn-outline-secondary w-100">Сброс</a>
             </div>
         </div>
     </form>
