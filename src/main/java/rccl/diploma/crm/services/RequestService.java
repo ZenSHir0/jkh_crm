@@ -76,5 +76,19 @@ public class RequestService {
     public List<Request> getLastRequestsByResident(User resident) {
         return requestRepository.findTop10ByResidentOrderByCreatedAtDesc(resident);
     }
+
+    public Request getRequestByIdForUser(Long id, User currentUser) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+
+        boolean isResident = request.getResident().getId().equals(currentUser.getId());
+        boolean isMaster = request.getMaster() != null && request.getMaster().getId().equals(currentUser.getId());
+
+        if (!isResident && !isMaster) {
+            throw new RuntimeException("Доступ запрещён");
+        }
+
+        return request;
+    }
 }
 

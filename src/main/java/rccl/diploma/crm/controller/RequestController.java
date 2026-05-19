@@ -60,6 +60,21 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/{id}")
+    public String requestDetails(@PathVariable Long id, Model model, Authentication authentication) {
+        String username = authentication.getName();
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        Request request = requestService.getRequestByIdForUser(id, currentUser);
+
+        model.addAttribute("request", request);
+        model.addAttribute("photos", request.getPhotos());
+        model.addAttribute("comments", request.getComments());
+
+        return "requests/details";
+    }
+
     @GetMapping("/my")
     public String myRequests(Model model, Authentication authentication,
                              @RequestParam(defaultValue = "0") int page,
