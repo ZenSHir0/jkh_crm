@@ -105,6 +105,18 @@ public class RequestService {
     }
 
     @Transactional
+    public void completeRequest(Long id, User master) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.IN_PROGRESS) {
+            throw new RuntimeException("Завершить можно только заявку в статусе «В работе»");
+        }
+        request.setStatus(RequestStatus.DONE);
+        request.setClosedAt(LocalDateTime.now());
+        requestRepository.save(request);
+    }
+
+    @Transactional
     public void rejectRequest(Long id, User master, String reason) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));

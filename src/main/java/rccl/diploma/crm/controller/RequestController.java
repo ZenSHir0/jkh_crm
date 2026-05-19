@@ -92,6 +92,20 @@ public class RequestController {
         return "redirect:/requests/" + id;
     }
 
+    @PostMapping("/{id}/complete")
+    public String completeRequest(@PathVariable Long id, Authentication authentication,
+                                  RedirectAttributes redirectAttributes) {
+        User master = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        try {
+            requestService.completeRequest(id, master);
+            redirectAttributes.addFlashAttribute("success", "Заявка успешно завершена");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/requests/" + id;
+    }
+
     @PostMapping("/{id}/reject")
     public String rejectRequest(@PathVariable Long id,
                                 @RequestParam String reason,
