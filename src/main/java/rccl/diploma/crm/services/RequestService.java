@@ -12,6 +12,7 @@ import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.RequestPhoto;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestStatus;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.repository.RequestRepository;
 
 import java.time.LocalDateTime;
@@ -71,6 +72,14 @@ public class RequestService {
     public Page<Request> getRequestsByResident(User resident, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return requestRepository.findByResident(resident, pageable);
+    }
+
+    public Page<Request> getRequestsForUser(User user, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        if (user.getRole() == Role.MASTER) {
+            return requestRepository.findByMaster(user, pageable);
+        }
+        return requestRepository.findByResident(user, pageable);
     }
 
     public List<Request> getLastRequestsByResident(User resident) {

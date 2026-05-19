@@ -84,7 +84,7 @@ public class RequestController {
         User resident = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-        Page<Request> requests = requestService.getRequestsByResident(resident, page, size);
+        Page<Request> requests = requestService.getRequestsForUser(resident, page, size);
         model.addAttribute("requests", requests.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", requests.getTotalPages());
