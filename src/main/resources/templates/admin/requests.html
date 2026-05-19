@@ -68,26 +68,27 @@
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${requests.isEmpty()}">
+            <td colspan="8" class="text-center py-4 text-muted">Заявок не найдено</td>
+        </tr>
         <tr th:each="request : ${requests}">
             <td th:text="${request.id}"></td>
             <td th:text="${request.resident.fullName}"></td>
             <td th:text="${request.title}"></td>
             <td th:text="${request.type.displayName}"></td>
             <td>
-                <span class="badge" th:classappend="${request.status.badgeClass}" th:text="${request.status.displayName}"></span>
+                <span class="status" th:classappend="${request.status.badgeClass}" th:text="${request.status.displayName}"></span>
             </td>
             <td th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
             <td th:text="${request.master?.fullName ?: 'Не назначен'}"></td>
             <td>
                 <a th:href="@{/admin/requests/{id}(id=${request.id})}" class="btn btn-sm btn-info">Детали</a>
-                <button class="btn btn-sm btn-primary">Назначить мастера</button>
-                <button class="btn btn-sm btn-warning">Изменить статус</button>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <nav aria-label="Pagination">
+    <nav th:if="${totalPages > 1}" aria-label="Pagination">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${currentPage > 0}">
                 <a class="page-link" th:href="@{/admin/requests(page=${currentPage - 1})}">Предыдущая</a>

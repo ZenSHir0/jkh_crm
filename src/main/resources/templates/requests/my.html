@@ -24,6 +24,9 @@
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${requests.isEmpty()}">
+            <td colspan="6" class="text-center py-4 text-muted">Заявок пока нет</td>
+        </tr>
         <tr th:each="request : ${requests}">
             <td th:text="${request.id}"></td>
             <td th:text="${request.title}"></td>
@@ -37,7 +40,7 @@
         </tbody>
     </table>
 
-    <nav aria-label="Pagination">
+    <nav th:if="${totalPages > 1}" aria-label="Pagination">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${currentPage > 0}">
                 <a class="page-link" th:href="@{/requests/my(page=${currentPage - 1})}">Предыдущая</a>
