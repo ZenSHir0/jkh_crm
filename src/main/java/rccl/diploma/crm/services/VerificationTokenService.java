@@ -43,6 +43,26 @@ public class VerificationTokenService {
         return createToken(user, 1);
     }
 
+    public User validatePasswordResetToken(String token) {
+        VerificationToken vt = verificationTokenRepository.findByToken(token).orElse(null);
+        if (vt == null || vt.getExpiryDate().isBefore(LocalDateTime.now())) {
+            if (vt != null) verificationTokenRepository.delete(vt);
+            return null;
+        }
+        return vt.getUser();
+    }
+
+    public User consumePasswordResetToken(String token) {
+        VerificationToken vt = verificationTokenRepository.findByToken(token).orElse(null);
+        if (vt == null || vt.getExpiryDate().isBefore(LocalDateTime.now())) {
+            if (vt != null) verificationTokenRepository.delete(vt);
+            return null;
+        }
+        User user = vt.getUser();
+        verificationTokenRepository.delete(vt);
+        return user;
+    }
+
     public boolean verifyToken(String token) {
         VerificationToken vt = verificationTokenRepository.findByToken(token)
                 .orElse(null);

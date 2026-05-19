@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
+import rccl.diploma.crm.services.EmailService;
 import rccl.diploma.crm.services.VerificationTokenService;
+
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -21,11 +24,14 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final VerificationTokenService verificationTokenService;
+    private final EmailService emailService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, VerificationTokenService verificationTokenService) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                          VerificationTokenService verificationTokenService, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenService = verificationTokenService;
+        this.emailService = emailService;
     }
 
     private boolean isAuthenticated() {
@@ -78,6 +84,45 @@ public class AuthController {
         } else {
             return "redirect:/login?error=token-expired";
         }
+    }
+
+    @GetMapping("/forgot-password")
+    public String forgotPasswordForm() {
+        if (isAuthenticated()) return "redirect:/home";
+        return "forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestParam String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            String token = verificationTokenService.createPasswordResetToken(user);
+            emailService.sendConfirmationEmail(user, token);
+        }
+        return "redirect:/forgot-password?sent";
+    }
+
+    @GetMapping("/reset-password")
+    public String resetPasswordForm(@RequestParam String token, Model model) {
+        User user = verificationTokenService.validatePasswordResetToken(token);
+        if (user == null) return "redirect:/login?error=token-expired";
+        model.addAttribute("token", token);
+        return "reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String token,
+                                @RequestParam String password,
+                                @RequestParam String confirmPassword) {
+        if (!password.equals(confirmPassword)) {
+            return "redirect:/reset-password?token=" + token + "&error=mismatch";
+        }
+        User user = verificationTokenService.consumePasswordResetToken(token);
+        if (user == null) return "redirect:/login?error=token-expired";
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        return "redirect:/login?passwordreset";
     }
 
     @GetMapping("/home")

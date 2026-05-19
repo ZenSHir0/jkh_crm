@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import rccl.diploma.crm.dto.RequestDTO;
 import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.User;
@@ -33,11 +35,15 @@ public class ProfileController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final RequestService requestService;
+    private final PasswordEncoder passwordEncoder;
 
-    public ProfileController(UserRepository userRepository, UserService userService, RequestRepository requestRepository, RequestService requestService){
+    public ProfileController(UserRepository userRepository, UserService userService,
+                             RequestRepository requestRepository, RequestService requestService,
+                             PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.requestService = requestService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -52,6 +58,34 @@ public class ProfileController {
         model.addAttribute("user", user);
 
         return "profile/profile";
+    }
+
+    @GetMapping("/change-password")
+    public String changePasswordForm() {
+        return "profile/change-password";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmPassword,
+                                 Authentication authentication,
+                                 Model model) {
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            model.addAttribute("error", "Неверный текущий пароль");
+            return "profile/change-password";
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "Новые пароли не совпадают");
+            return "profile/change-password";
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return "redirect:/profile?passwordchanged";
     }
 
     @PostMapping("/update")
