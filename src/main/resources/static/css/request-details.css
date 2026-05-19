@@ -1,125 +1,3 @@
-.page-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--bs-body-color);
-    margin-bottom: 0;
-}
-
-.page-subtitle {
-    font-size: 0.85rem;
-    color: var(--text-muted-custom);
-}
-
-.detail-card {
-    background: #fff;
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius-lg);
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-}
-
-.detail-card-header {
-    padding: 0.85rem 1.5rem;
-    border-bottom: 1px solid var(--bs-border-color);
-    font-family: 'Syne', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted-custom);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
-
-.detail-card-body { padding: 0 1.5rem; }
-
-.description-body {
-    padding: 1.25rem 1.5rem;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--bs-body-color);
-}
-
-/* Панель действий */
-.actions-card {
-    background: #fff;
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius-lg);
-    overflow: hidden;
-    position: sticky;
-    top: 1.5rem;
-}
-
-.actions-card-header {
-    background: #1A1A2E;
-    padding: 1rem 1.5rem;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.02em;
-}
-
-.actions-card-body { padding: 1.25rem; }
-
-.action-section-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-muted-custom);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.6rem;
-}
-
-.btn-accept {
-    width: 100%;
-    padding: 10px;
-    background: var(--bs-success);
-    color: #fff;
-    border: none;
-    border-radius: var(--bs-border-radius);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.15s;
-    margin-bottom: 0.6rem;
-}
-
-.btn-accept:hover { background: #167a5b; }
-
-.btn-complete {
-    width: 100%;
-    padding: 10px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: var(--bs-border-radius);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.15s;
-    margin-bottom: 0.6rem;
-}
-
-.btn-complete:hover { background: var(--accent-dark); }
-
-.btn-reject {
-    width: 100%;
-    padding: 10px;
-    background: transparent;
-    color: var(--danger);
-    border: 1.5px solid var(--danger);
-    border-radius: var(--bs-border-radius);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.15s;
-}
-
-.btn-reject:hover { background: var(--danger-bg); }
-
 .reject-form {
     display: none;
     margin-top: 1rem;
@@ -135,45 +13,6 @@
 
 .reject-form .auth-label { color: var(--danger); }
 
-.btn-reject-confirm {
-    flex: 1;
-    padding: 10px;
-    background: var(--danger);
-    color: #fff;
-    border: none;
-    border-radius: var(--bs-border-radius);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.btn-reject-confirm:hover { background: var(--accent-dark); }
-
-.btn-cancel {
-    flex: 1;
-    padding: 10px;
-    background: transparent;
-    color: var(--bs-body-color);
-    border: 1px solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: background 0.15s;
-}
-
-.btn-cancel:hover { background: var(--bs-secondary-bg); }
-
-.actions-divider {
-    border: none;
-    border-top: 1px solid var(--bs-border-color);
-    margin: 1rem 0;
-}
-
-/* Комментарии */
 .comment-item {
     padding: 0.85rem 0;
     border-bottom: 1px solid var(--bs-border-color);
@@ -184,7 +23,6 @@
 .comment-author {
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--bs-body-color);
 }
 
 .comment-date {
@@ -195,17 +33,8 @@
 
 .comment-text {
     font-size: 0.92rem;
-    margin-top: 4px;
-    color: var(--bs-body-color);
+    margin: 4px 0 0;
     line-height: 1.6;
-    margin-bottom: 0;
-}
-
-.empty-comments {
-    padding: 1.5rem 0;
-    text-align: center;
-    color: var(--text-muted-custom);
-    font-size: 0.875rem;
 }
 
 .comment-form-section {
@@ -213,7 +42,11 @@
     border-top: 1px solid var(--bs-border-color);
 }
 
-.comment-submit {
-    max-width: 200px;
-    margin-top: 0.5rem;
+.comment-submit { max-width: 200px; margin-top: 0.5rem; }
+
+.empty-comments {
+    padding: 1.5rem 0;
+    text-align: center;
+    color: var(--text-muted-custom);
+    font-size: 0.875rem;
 }
