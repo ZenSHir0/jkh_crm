@@ -83,6 +83,15 @@
 
 .auth-field { margin-bottom: 1rem; }
 
+.auth-field a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: none;
+}
+
+.auth-field a:hover { text-decoration: underline; }
+
 .auth-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

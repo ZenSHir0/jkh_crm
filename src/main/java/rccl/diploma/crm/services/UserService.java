@@ -39,6 +39,10 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    private String blankToNull(String value) {
+        return (value == null || value.isBlank()) ? null : value;
+    }
+
     public void updateUser(User user) {
         User old_user = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -46,9 +50,9 @@ public class UserService {
         old_user.setName(user.getName());
         old_user.setSurname(user.getSurname());
         old_user.setLastName(user.getLastName());
-        old_user.setPhone(user.getPhone());
-        old_user.setBuilding(user.getBuilding());
-        old_user.setApartment(user.getApartment());
+        old_user.setPhone(blankToNull(user.getPhone()));
+        old_user.setBuilding(blankToNull(user.getBuilding()));
+        old_user.setApartment(blankToNull(user.getApartment()));
         userRepository.save(old_user);
     }
 }

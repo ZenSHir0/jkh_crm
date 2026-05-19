@@ -70,9 +70,13 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.RESIDENT);
         user.setEnabled(false);
+        if (user.getPhone() != null && user.getPhone().isBlank()) user.setPhone(null);
+        if (user.getApartment() != null && user.getApartment().isBlank()) user.setApartment(null);
         user = userRepository.save(user);
 
-        verificationTokenService.sendVerificationToken(user);
+
+        String token = verificationTokenService.createVerificationToken(user);
+        emailService.sendVerificationEmail(user, token);
 
         return "redirect:/register?verificationsent";
     }
@@ -98,7 +102,7 @@ public class AuthController {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             String token = verificationTokenService.createPasswordResetToken(user);
-            emailService.sendConfirmationEmail(user, token);
+            emailService.sendPasswordReset(user, token);
         }
         return "redirect:/forgot-password?sent";
     }
