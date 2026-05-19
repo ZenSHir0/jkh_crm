@@ -125,3 +125,32 @@
 @media (max-width: 700px) {
     .main-grid { grid-template-columns: 1fr; }
 }
+
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.page-link {
+    color: var(--accent);
+    border-color: var(--bs-border-color);
+    transition: all 0.15s;
+}
+
+.page-link:hover,
+.page-link:focus {
+    color: var(--accent-dark);
+    background-color: var(--accent-light);
+    border-color: var(--bs-border-color);
+    box-shadow: none;
+}
+
+.page-item.active .page-link {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.page-item.disabled .page-link {
+    color: var(--text-muted-custom);
+    border-color: var(--bs-border-color);
+}
