@@ -48,7 +48,7 @@ public class AdminRequestController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        Specification<Request> spec = Specification.where(null);
+        Specification<Request> spec = (root, query, cb) -> cb.conjunction();
         if (status != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("status"), status));
         }

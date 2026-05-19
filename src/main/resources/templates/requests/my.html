@@ -40,13 +40,13 @@
     <nav aria-label="Pagination">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${currentPage > 0}">
-                <a class="page-link" th:href="@{/my-requests(page=${currentPage - 1})}">Предыдущая</a>
+                <a class="page-link" th:href="@{/requests/my(page=${currentPage - 1})}">Предыдущая</a>
             </li>
             <li th:each="p : ${#numbers.sequence(0, totalPages - 1)}" class="page-item" th:classappend="${p == currentPage ? 'active' : ''}">
-                <a class="page-link" th:href="@{/my-requests(page=${p})}" th:text="${p + 1}"></a>
+                <a class="page-link" th:href="@{/requests/my(page=${p})}" th:text="${p + 1}"></a>
             </li>
             <li class="page-item" th:if="${currentPage < totalPages - 1}">
-                <a class="page-link" th:href="@{/my-requests(page=${currentPage + 1})}">Следующая</a>
+                <a class="page-link" th:href="@{/requests/my(page=${currentPage + 1})}">Следующая</a>
             </li>
         </ul>
     </nav>
