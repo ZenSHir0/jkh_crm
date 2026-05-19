@@ -4,16 +4,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import rccl.diploma.crm.entity.Request;
+import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.RequestType;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.repository.RequestRepository;
+import rccl.diploma.crm.repository.UserRepository;
+import rccl.diploma.crm.services.RequestService;
 
 import java.time.LocalDate;
 
@@ -22,9 +25,15 @@ import java.time.LocalDate;
 public class AdminRequestController {
 
     private final RequestRepository requestRepository;
+    private final RequestService requestService;
+    private final UserRepository userRepository;
 
-    public AdminRequestController (RequestRepository requestRepository) {
+    public AdminRequestController(RequestRepository requestRepository,
+                                  RequestService requestService,
+                                  UserRepository userRepository) {
         this.requestRepository = requestRepository;
+        this.requestService = requestService;
+        this.userRepository = userRepository;
     }
 
     //TODO Make filter work with only one date defined
@@ -69,7 +78,90 @@ public class AdminRequestController {
         model.addAttribute("request", request);
         model.addAttribute("photos", request.getPhotos());
         model.addAttribute("comments", request.getComments());
+        model.addAttribute("masters", userRepository.findAllByRole(Role.MASTER));
 
         return "admin/request-details";
+    }
+
+    private User getAdmin(Authentication authentication) {
+        return userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+    }
+
+    @PostMapping("/{id}/assign")
+    public String assignMaster(@PathVariable Long id,
+                               @RequestParam Long masterId,
+                               Authentication authentication,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            requestService.assignMaster(id, masterId, getAdmin(authentication));
+            redirectAttributes.addFlashAttribute("success", "Мастер назначен");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/accept")
+    public String acceptRequest(@PathVariable Long id, Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            requestService.acceptRequest(id, getAdmin(authentication), "Администратор взял заявку в работу");
+            redirectAttributes.addFlashAttribute("success", "Заявка взята в работу");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/complete")
+    public String completeRequest(@PathVariable Long id, Authentication authentication,
+                                  RedirectAttributes redirectAttributes) {
+        try {
+            requestService.completeRequest(id, getAdmin(authentication), "Администратор закрыл заявку");
+            redirectAttributes.addFlashAttribute("success", "Заявка закрыта");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/reopen")
+    public String reopenRequest(@PathVariable Long id, Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            requestService.reopenRequest(id, getAdmin(authentication), "Администратор возобновил заявку");
+            redirectAttributes.addFlashAttribute("success", "Заявка возобновлена");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/reject")
+    public String rejectRequest(@PathVariable Long id,
+                                @RequestParam String reason,
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            requestService.rejectRequest(id, getAdmin(authentication), reason, "Администратор отклонил заявку. Причина");
+            redirectAttributes.addFlashAttribute("success", "Заявка отклонена");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/comment")
+    public String addComment(@PathVariable Long id,
+                             @RequestParam String text,
+                             Authentication authentication,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            requestService.addComment(id, getAdmin(authentication), text);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
     }
 }

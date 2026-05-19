@@ -16,6 +16,7 @@ import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.repository.RequestCommentRepository;
 import rccl.diploma.crm.repository.RequestRepository;
+import rccl.diploma.crm.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,13 +27,16 @@ public class RequestService {
     private final RequestRepository requestRepository;
     private final RequestCommentRepository commentRepository;
     private final FileStorageService fileStorageService;
+    private final UserRepository userRepository;
 
     public RequestService(RequestRepository requestRepository,
                           RequestCommentRepository commentRepository,
-                          FileStorageService fileStorageService) {
+                          FileStorageService fileStorageService,
+                          UserRepository userRepository) {
         this.requestRepository = requestRepository;
         this.commentRepository = commentRepository;
         this.fileStorageService = fileStorageService;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -93,20 +97,22 @@ public class RequestService {
     }
 
     @Transactional
-    public void acceptRequest(Long id, User master) {
+    public void acceptRequest(Long id, User actor, String logText) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         if (request.getStatus() != RequestStatus.NEW) {
             throw new RuntimeException("Заявку можно взять в работу только в статусе «Новая»");
         }
         request.setStatus(RequestStatus.IN_PROGRESS);
-        request.setMaster(master);
+        if (request.getMaster() == null) {
+            request.setMaster(actor);
+        }
         requestRepository.save(request);
-        logComment(request, master, "Заявка взята в работу");
+        logComment(request, actor, logText);
     }
 
     @Transactional
-    public void reopenRequest(Long id, User master) {
+    public void reopenRequest(Long id, User actor, String logText) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         if (request.getStatus() != RequestStatus.DONE && request.getStatus() != RequestStatus.REJECTED) {
@@ -115,11 +121,11 @@ public class RequestService {
         request.setStatus(RequestStatus.IN_PROGRESS);
         request.setClosedAt(null);
         requestRepository.save(request);
-        logComment(request, master, "Заявка возобновлена");
+        logComment(request, actor, logText);
     }
 
     @Transactional
-    public void completeRequest(Long id, User master) {
+    public void completeRequest(Long id, User actor, String logText) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         if (request.getStatus() != RequestStatus.IN_PROGRESS) {
@@ -128,11 +134,11 @@ public class RequestService {
         request.setStatus(RequestStatus.DONE);
         request.setClosedAt(LocalDateTime.now());
         requestRepository.save(request);
-        logComment(request, master, "Работа выполнена");
+        logComment(request, actor, logText);
     }
 
     @Transactional
-    public void rejectRequest(Long id, User master, String reason) {
+    public void rejectRequest(Long id, User actor, String reason, String logPrefix) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         if (request.getStatus() != RequestStatus.NEW && request.getStatus() != RequestStatus.IN_PROGRESS) {
@@ -141,7 +147,18 @@ public class RequestService {
         request.setStatus(RequestStatus.REJECTED);
         request.setClosedAt(LocalDateTime.now());
         requestRepository.save(request);
-        logComment(request, master, "Причина отказа: " + reason);
+        logComment(request, actor, logPrefix + ": " + reason);
+    }
+
+    @Transactional
+    public void assignMaster(Long requestId, Long masterId, User admin) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        User master = userRepository.findById(masterId)
+                .orElseThrow(() -> new RuntimeException("Мастер не найден"));
+        request.setMaster(master);
+        requestRepository.save(request);
+        logComment(request, admin, "Администратор назначил мастера: " + master.getFullName());
     }
 
     @Transactional

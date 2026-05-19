@@ -84,7 +84,7 @@ public class RequestController {
         User master = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         try {
-            requestService.acceptRequest(id, master);
+            requestService.acceptRequest(id, master, "Заявка взята в работу");
             redirectAttributes.addFlashAttribute("success", "Заявка взята в работу");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -98,7 +98,7 @@ public class RequestController {
         User master = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         try {
-            requestService.reopenRequest(id, master);
+            requestService.reopenRequest(id, master, "Заявка возобновлена");
             redirectAttributes.addFlashAttribute("success", "Заявка возобновлена");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -112,7 +112,7 @@ public class RequestController {
         User master = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         try {
-            requestService.completeRequest(id, master);
+            requestService.completeRequest(id, master, "Работа выполнена");
             redirectAttributes.addFlashAttribute("success", "Заявка успешно завершена");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -128,7 +128,7 @@ public class RequestController {
         User master = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         try {
-            requestService.rejectRequest(id, master, reason);
+            requestService.rejectRequest(id, master, reason, "Причина отказа");
             redirectAttributes.addFlashAttribute("success", "Заявка отклонена");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());

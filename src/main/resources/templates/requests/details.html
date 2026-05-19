@@ -28,7 +28,7 @@
     <div class="row g-4">
 
         <!-- Левая колонка -->
-        <div class="col-lg-8">
+        <div th:classappend="${isMaster} ? 'col-lg-8' : 'col-12'">
 
             <div class="card mb-3">
                 <div class="card-header">Основная информация</div>
@@ -91,7 +91,7 @@
                         <p class="comment-text" th:text="${comment.text}"></p>
                     </div>
                 </div>
-                <div th:if="${isMaster and (request.status.name() == 'NEW' or request.status.name() == 'IN_PROGRESS')}"
+                <div th:if="${request.status.name() == 'NEW' or request.status.name() == 'IN_PROGRESS'}"
                      class="comment-form-section">
                     <form th:action="@{/requests/{id}/comment(id=${request.id})}" method="post">
                         <label class="auth-label">Новый комментарий</label>
