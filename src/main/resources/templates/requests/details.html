@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали заявки</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"/>
+
+<div class="container mt-4">
+    <h2>Заявка №<span th:text="${request.id}"/></h2>
+
+    <div class="card mb-4">
+        <div class="card-header">Основная информация</div>
+        <div class="card-body">
+            <p><strong>Заголовок:</strong> <span th:text="${request.title}"></span></p>
+            <p><strong>Тип:</strong> <span th:text="${request.type.displayName}"></span></p>
+            <p><strong>Статус:</strong> <span class="badge" th:classappend="${request.status.badgeClass}" th:text="${request.status.displayName}"></span></p>
+            <p><strong>Мастер:</strong> <span th:text="${request.master?.fullName ?: 'Не назначен'}"></span></p>
+            <p><strong>Дата создания:</strong> <span th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy HH:mm')}"></span></p>
+            <p th:if="${request.deadline != null}"><strong>Дедлайн:</strong> <span th:text="${#temporals.format(request.deadline, 'dd.MM.yyyy HH:mm')}"></span></p>
+            <p th:if="${request.closedAt != null}"><strong>Дата закрытия:</strong> <span th:text="${#temporals.format(request.closedAt, 'dd.MM.yyyy HH:mm')}"></span></p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Описание</div>
+        <div class="card-body">
+            <p th:text="${request.description}"></p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Прикреплённые фото</div>
+        <div class="card-body">
+            <div th:if="${photos.isEmpty()}">Фото нет</div>
+            <div th:each="photo : ${photos}" class="mb-3">
+                <img th:src="@{${photo.filePath}}" alt="Фото" class="img-fluid" style="max-width: 300px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Комментарии</div>
+        <div class="card-body">
+            <div th:if="${comments.isEmpty()}">Комментариев нет</div>
+            <div th:each="comment : ${comments}">
+                <p><strong><span th:text="${comment.author.fullName}"></span></strong>
+                    (<span th:text="${#temporals.format(comment.createdAt, 'dd.MM.yyyy HH:mm')}"></span>):
+                </p>
+                <p th:text="${comment.text}"></p>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="/requests/my" class="btn btn-secondary">Назад к моим заявкам</a>
+    </div>
+</div>
+</body>
+</html>
