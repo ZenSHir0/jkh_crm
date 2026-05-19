@@ -1,7 +1,6 @@
 package rccl.diploma.crm.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -52,8 +51,9 @@ public class User implements UserDetails {
     @Column
     private String apartment;
 
-    @Column
-    private String building;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "building_id")
+    private Building building;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
