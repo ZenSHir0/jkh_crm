@@ -2,24 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Админ-панель</title>
+    <title>Пользователи</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"/>
-<div class="container mt-4">
-    <h2>Список пользователей</h2>
-    <table class="table table-striped">
+<div class="container mt-4 mb-5">
+    <h4 class="mb-4">Список пользователей</h4>
+    <table class="table table-hover">
         <thead>
         <tr>
             <th>ID</th>
             <th>Логин</th>
-            <th>Почта</th>
+            <th>Email</th>
             <th>ФИО</th>
             <th>Роль</th>
-            <th>Активен</th>
-            <th>Действия</th>
+            <th>Статус</th>
+            <th style="width: 220px;">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -27,25 +28,33 @@
             <td th:text="${user.id}"></td>
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
-            <td th:text="${user.getFullName}"></td>
-            <td th:text="${user.role.getDisplayName}"></td>
-            <td th:text="${user.enabled ? 'Да' : 'Нет'}"></td>
+            <td th:text="${user.fullName}"></td>
+            <td th:text="${user.role.displayName}"></td>
             <td>
-                <form th:action="@{/admin/users/{id}/role(id=${user.id})}" method="post" class="d-inline">
-                    <label for="role" class="visually-hidden">Выбрать роль</label>
-                    <select name="role" id="role">
-                        <option value="RESIDENT" th:selected="${user.role == 'RESIDENT'}">Житель</option>
-                        <option value="MASTER" th:selected="${user.role == 'MASTER'}">Мастер</option>
-                        <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">Админ</option>
-                    </select>
-                    <button type="submit" class="btn btn-sm btn-primary">Изменить роль</button>
-                </form>
-                <form th:action="@{/admin/users/{id}/enabled(id=${user.id})}" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-sm" th:classappend="${user.enabled ? 'btn-warning' : 'btn-success'}" th:text="${user.enabled ? 'Отключить' : 'Включить'}"/>
-                </form>
-                <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
-                </form>
+                <span class="status" th:classappend="${user.enabled ? 'status-active' : 'status-done'}"
+                      th:text="${user.enabled ? 'Активен' : 'Отключён'}"></span>
+            </td>
+            <td>
+                <div class="user-actions">
+                    <form th:action="@{/admin/users/{id}/role(id=${user.id})}" method="post" class="role-form">
+                        <select name="role" class="form-select form-select-sm">
+                            <option value="RESIDENT" th:selected="${user.role.name() == 'RESIDENT'}">Житель</option>
+                            <option value="MASTER"   th:selected="${user.role.name() == 'MASTER'}">Мастер</option>
+                            <option value="ADMIN"    th:selected="${user.role.name() == 'ADMIN'}">Админ</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+                    </form>
+                    <div class="toggle-delete-row">
+                        <form th:action="@{/admin/users/{id}/enabled(id=${user.id})}" method="post">
+                            <button type="submit" class="btn btn-sm w-100"
+                                    th:classappend="${user.enabled ? 'btn-outline-warning' : 'btn-outline-success'}"
+                                    th:text="${user.enabled ? 'Отключить' : 'Включить'}"></button>
+                        </form>
+                        <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger w-100">Удалить</button>
+                        </form>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>
