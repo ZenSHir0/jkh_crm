@@ -11,7 +11,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import rccl.diploma.crm.dto.RequestDTO;
 import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.User;
+import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.RequestType;
+import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.repository.UserRepository;
 import rccl.diploma.crm.services.RequestService;
 
@@ -71,8 +73,54 @@ public class RequestController {
         model.addAttribute("request", request);
         model.addAttribute("photos", request.getPhotos());
         model.addAttribute("comments", request.getComments());
+        model.addAttribute("isMaster", currentUser.getRole() == Role.MASTER);
 
         return "requests/details";
+    }
+
+    @PostMapping("/{id}/accept")
+    public String acceptRequest(@PathVariable Long id, Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        User master = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        try {
+            requestService.acceptRequest(id, master);
+            redirectAttributes.addFlashAttribute("success", "Заявка взята в работу");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/requests/" + id;
+    }
+
+    @PostMapping("/{id}/reject")
+    public String rejectRequest(@PathVariable Long id,
+                                @RequestParam String reason,
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        User master = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        try {
+            requestService.rejectRequest(id, master, reason);
+            redirectAttributes.addFlashAttribute("success", "Заявка отклонена");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/requests/my";
+    }
+
+    @PostMapping("/{id}/comment")
+    public String addComment(@PathVariable Long id,
+                             @RequestParam String text,
+                             Authentication authentication,
+                             RedirectAttributes redirectAttributes) {
+        User author = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        try {
+            requestService.addComment(id, author, text);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/requests/" + id;
     }
 
     @GetMapping("/my")

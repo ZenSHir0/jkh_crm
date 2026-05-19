@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import rccl.diploma.crm.dto.RequestDTO;
 import rccl.diploma.crm.entity.Request;
+import rccl.diploma.crm.entity.RequestComment;
 import rccl.diploma.crm.entity.RequestPhoto;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.Role;
+import rccl.diploma.crm.repository.RequestCommentRepository;
 import rccl.diploma.crm.repository.RequestRepository;
 
 import java.time.LocalDateTime;
@@ -22,10 +24,14 @@ import java.util.List;
 public class RequestService {
 
     private final RequestRepository requestRepository;
+    private final RequestCommentRepository commentRepository;
     private final FileStorageService fileStorageService;
 
-    public RequestService(RequestRepository requestRepository, FileStorageService fileStorageService) {
+    public RequestService(RequestRepository requestRepository,
+                          RequestCommentRepository commentRepository,
+                          FileStorageService fileStorageService) {
         this.requestRepository = requestRepository;
+        this.commentRepository = commentRepository;
         this.fileStorageService = fileStorageService;
     }
 
@@ -84,6 +90,51 @@ public class RequestService {
 
     public List<Request> getLastRequestsByResident(User resident) {
         return requestRepository.findTop10ByResidentOrderByCreatedAtDesc(resident);
+    }
+
+    @Transactional
+    public void acceptRequest(Long id, User master) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.NEW) {
+            throw new RuntimeException("Заявку можно взять в работу только в статусе «Новая»");
+        }
+        request.setStatus(RequestStatus.IN_PROGRESS);
+        request.setMaster(master);
+        requestRepository.save(request);
+    }
+
+    @Transactional
+    public void rejectRequest(Long id, User master, String reason) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.NEW && request.getStatus() != RequestStatus.IN_PROGRESS) {
+            throw new RuntimeException("Нельзя отклонить заявку в текущем статусе");
+        }
+        request.setStatus(RequestStatus.REJECTED);
+        request.setClosedAt(LocalDateTime.now());
+        requestRepository.save(request);
+
+        RequestComment comment = RequestComment.builder()
+                .request(request)
+                .author(master)
+                .text("Причина отказа: " + reason)
+                .createdAt(LocalDateTime.now())
+                .build();
+        commentRepository.save(comment);
+    }
+
+    @Transactional
+    public void addComment(Long id, User author, String text) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        RequestComment comment = RequestComment.builder()
+                .request(request)
+                .author(author)
+                .text(text)
+                .createdAt(LocalDateTime.now())
+                .build();
+        commentRepository.save(comment);
     }
 
     public Request getRequestByIdForUser(Long id, User currentUser) {
