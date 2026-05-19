@@ -1,3 +1,23 @@
+.actions-panel {
+    background: #fff;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-lg);
+    overflow: hidden;
+    position: sticky;
+    top: 72px;
+}
+
+.actions-panel-header {
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--bs-border-color);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted-custom);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
 .reject-form {
     display: none;
     margin-top: 1rem;

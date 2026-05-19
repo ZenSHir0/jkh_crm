@@ -105,6 +105,18 @@ public class RequestService {
     }
 
     @Transactional
+    public void reopenRequest(Long id, User master) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.DONE && request.getStatus() != RequestStatus.REJECTED) {
+            throw new RuntimeException("Возобновить можно только выполненную или отклонённую заявку");
+        }
+        request.setStatus(RequestStatus.IN_PROGRESS);
+        request.setClosedAt(null);
+        requestRepository.save(request);
+    }
+
+    @Transactional
     public void completeRequest(Long id, User master) {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
