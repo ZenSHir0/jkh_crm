@@ -1,8 +1,10 @@
 package rccl.diploma.crm.services;
 
 import org.springframework.stereotype.Service;
-import rccl.diploma.crm.entity.enums.Role;
+import rccl.diploma.crm.entity.Building;
 import rccl.diploma.crm.entity.User;
+import rccl.diploma.crm.entity.enums.Role;
+import rccl.diploma.crm.repository.BuildingRepository;
 import rccl.diploma.crm.repository.UserRepository;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BuildingRepository buildingRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BuildingRepository buildingRepository) {
         this.userRepository = userRepository;
+        this.buildingRepository = buildingRepository;
     }
 
     public List<User> getAllUsers() {
@@ -43,7 +47,7 @@ public class UserService {
         return (value == null || value.isBlank()) ? null : value;
     }
 
-    public void updateUser(User user) {
+    public void updateUser(User user, Long buildingId) {
         User old_user = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -51,8 +55,13 @@ public class UserService {
         old_user.setSurname(user.getSurname());
         old_user.setLastName(user.getLastName());
         old_user.setPhone(blankToNull(user.getPhone()));
-        old_user.setBuilding(blankToNull(user.getBuilding()));
         old_user.setApartment(blankToNull(user.getApartment()));
+
+        Building building = buildingId != null
+                ? buildingRepository.findById(buildingId).orElse(null)
+                : null;
+        old_user.setBuilding(building);
+
         userRepository.save(old_user);
     }
 }

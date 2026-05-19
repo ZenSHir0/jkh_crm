@@ -54,9 +54,16 @@
                         <input class="edit-mode d-none form-control" type="text" th:field="*{phone}"/>
                     </div>
                     <div class="field-row">
-                        <span class="field-label">Адрес</span>
-                        <span class="field-value view-mode" th:text="${user.building ?: '—'}">—</span>
-                        <input class="form-control edit-mode d-none" type="text" th:field="*{building}" placeholder="ул. Ленина" />
+                        <span class="field-label">Дом</span>
+                        <span class="field-value view-mode" th:text="${user.building?.address ?: '—'}">—</span>
+                        <select name="buildingId" class="form-select form-select-sm edit-mode d-none">
+                            <option value="">— не указан —</option>
+                            <option th:each="b : ${buildings}"
+                                    th:value="${b.id}"
+                                    th:text="${b.address}"
+                                    th:selected="${user.building != null and user.building.id == b.id}">
+                            </option>
+                        </select>
                     </div>
                     <div class="field-row">
                         <span class="field-label">Квартира</span>

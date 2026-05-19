@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import rccl.diploma.crm.dto.RequestDTO;
 import rccl.diploma.crm.entity.Request;
 import rccl.diploma.crm.entity.User;
+import rccl.diploma.crm.repository.BuildingRepository;
 import rccl.diploma.crm.repository.RequestRepository;
 import rccl.diploma.crm.repository.UserRepository;
 import rccl.diploma.crm.services.RequestService;
@@ -35,14 +35,16 @@ public class ProfileController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final RequestService requestService;
+    private final BuildingRepository buildingRepository;
     private final PasswordEncoder passwordEncoder;
 
     public ProfileController(UserRepository userRepository, UserService userService,
                              RequestRepository requestRepository, RequestService requestService,
-                             PasswordEncoder passwordEncoder) {
+                             BuildingRepository buildingRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.requestService = requestService;
+        this.buildingRepository = buildingRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -56,6 +58,7 @@ public class ProfileController {
 
         model.addAttribute("requests", user_requests);
         model.addAttribute("user", user);
+        model.addAttribute("buildings", buildingRepository.findAll());
 
         return "profile/profile";
     }
@@ -91,6 +94,7 @@ public class ProfileController {
     @PostMapping("/update")
     public String updateProfile(@Valid @ModelAttribute("user") User user,
                                 BindingResult result,
+                                @RequestParam(required = false) Long buildingId,
                                 Model model) {
 
         if (result.hasErrors()) {
@@ -99,9 +103,10 @@ public class ProfileController {
                     .map(FieldError::getDefaultMessage)
                     .collect(Collectors.toList());
             model.addAttribute("errors", errors);
+            model.addAttribute("buildings", buildingRepository.findAll());
             return "profile/profile";
         }
-        userService.updateUser(user);
+        userService.updateUser(user, buildingId);
         return "redirect:/profile";
     }
 }
