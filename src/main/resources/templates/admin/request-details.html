@@ -143,6 +143,29 @@
                         <button type="submit" class="btn btn-primary w-100">Закрыть заявку</button>
                     </form>
 
+                    <!-- Действия для статуса «На проверке» -->
+                    <form th:if="${request.status.name() == 'PENDING_REVIEW'}"
+                          th:action="@{/admin/requests/{id}/approve(id=${request.id})}" method="post">
+                        <button type="submit" class="btn btn-success w-100">Подтвердить выполнение</button>
+                    </form>
+
+                    <div th:if="${request.status.name() == 'PENDING_REVIEW'}">
+                        <button type="button" class="btn btn-outline-warning w-100"
+                                onclick="toggleReturnForm()">Вернуть на доработку</button>
+                        <div id="returnForm" class="reject-form">
+                            <form th:action="@{/admin/requests/{id}/return(id=${request.id})}" method="post">
+                                <label class="auth-label">Причина возврата</label>
+                                <textarea name="comment" class="auth-input" rows="3"
+                                          placeholder="Что нужно доработать..." required></textarea>
+                                <div class="d-flex gap-2 mt-2">
+                                    <button type="submit" class="btn btn-warning flex-fill">Вернуть</button>
+                                    <button type="button" class="btn btn-outline-secondary flex-fill"
+                                            onclick="toggleReturnForm()">Отмена</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <form th:if="${request.status.name() == 'DONE' or request.status.name() == 'REJECTED'}"
                           th:action="@{/admin/requests/{id}/reopen(id=${request.id})}" method="post">
                         <button type="submit" class="btn btn-outline-secondary w-100">Возобновить</button>
@@ -178,6 +201,9 @@
     }
     function toggleAssignForm() {
         document.getElementById('assignForm').classList.toggle('visible');
+    }
+    function toggleReturnForm() {
+        document.getElementById('returnForm').classList.toggle('visible');
     }
 </script>
 

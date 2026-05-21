@@ -3,10 +3,11 @@ package rccl.diploma.crm.entity.enums;
 public enum RequestStatus {
     NEW("Новая"),
     IN_PROGRESS("В работе"),
+    PENDING_REVIEW("На проверке"),
     DONE("Выполнена"),
     REJECTED("Отклонена"),
     CANCELLED("Отменена"),
-    ON_HOLD("На паузе");  // если вдруг понадобится статус "ждём комплект документов" или что-то подобное
+    ON_HOLD("На паузе");
 
     private final String displayName;
 
@@ -21,12 +22,13 @@ public enum RequestStatus {
     // Опционально: метод для цвета в таблице (Bootstrap-классы)
     public String getBadgeClass() {
         return switch (this) {
-            case NEW -> "status-new";          // синий — новая
-            case IN_PROGRESS -> "status-wait";  // жёлтый — в работе
-            case DONE -> "status-active";         // зелёный — выполнена
-            case REJECTED -> "status-danger";      // красный — отклонена
-            case CANCELLED -> "status-done";  // серый — отменена
-            case ON_HOLD -> "status-wait";         // голубой — на паузе
+            case NEW -> "status-new";
+            case IN_PROGRESS -> "status-wait";
+            case PENDING_REVIEW -> "status-review";
+            case DONE -> "status-active";
+            case REJECTED -> "status-danger";
+            case CANCELLED -> "status-done";
+            case ON_HOLD -> "status-wait";
         };
     }
 }

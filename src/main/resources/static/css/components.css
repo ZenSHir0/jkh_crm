@@ -73,6 +73,7 @@
 
 .status-new    { background: var(--accent-light); color: var(--accent-dark); }
 .status-wait   { background: var(--warning-bg);   color: #854F0B; }
+.status-review { background: #FFF0D9;             color: #A05C00; }
 .status-active { background: var(--success-bg);   color: #0F6E56; }
 .status-done   { background: var(--bs-secondary-bg); color: var(--text-muted-custom); }
 .status-danger { background: var(--danger-bg);    color: var(--danger); }

@@ -14,10 +14,14 @@ import rccl.diploma.crm.entity.RequestPhoto;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.entity.enums.RequestStatus;
 import rccl.diploma.crm.entity.enums.Role;
+import rccl.diploma.crm.entity.BalanceTransaction;
+import rccl.diploma.crm.entity.enums.TransactionType;
+import rccl.diploma.crm.repository.BalanceTransactionRepository;
 import rccl.diploma.crm.repository.RequestCommentRepository;
 import rccl.diploma.crm.repository.RequestRepository;
 import rccl.diploma.crm.repository.UserRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,15 +32,18 @@ public class RequestService {
     private final RequestCommentRepository commentRepository;
     private final FileStorageService fileStorageService;
     private final UserRepository userRepository;
+    private final BalanceTransactionRepository transactionRepository;
 
     public RequestService(RequestRepository requestRepository,
                           RequestCommentRepository commentRepository,
                           FileStorageService fileStorageService,
-                          UserRepository userRepository) {
+                          UserRepository userRepository,
+                          BalanceTransactionRepository transactionRepository) {
         this.requestRepository = requestRepository;
         this.commentRepository = commentRepository;
         this.fileStorageService = fileStorageService;
         this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Transactional
@@ -129,12 +136,54 @@ public class RequestService {
         Request request = requestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
         if (request.getStatus() != RequestStatus.IN_PROGRESS) {
-            throw new RuntimeException("Завершить можно только заявку в статусе «В работе»");
+            throw new RuntimeException("Отправить на проверку можно только заявку в статусе «В работе»");
+        }
+        request.setStatus(RequestStatus.PENDING_REVIEW);
+        requestRepository.save(request);
+        logComment(request, actor, logText);
+    }
+
+    @Transactional
+    public void approveRequest(Long id, User admin) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.PENDING_REVIEW) {
+            throw new RuntimeException("Подтвердить можно только заявку в статусе «На проверке»");
         }
         request.setStatus(RequestStatus.DONE);
         request.setClosedAt(LocalDateTime.now());
         requestRepository.save(request);
-        logComment(request, actor, logText);
+        logComment(request, admin, "Администратор подтвердил выполнение заявки");
+
+        User master = request.getMaster();
+        if (master != null) {
+            BigDecimal amount = request.getType().getPrice();
+            if (amount.compareTo(BigDecimal.ZERO) > 0) {
+                master.setBalance(master.getBalance().add(amount));
+                userRepository.save(master);
+                transactionRepository.save(BalanceTransaction.builder()
+                        .master(master)
+                        .createdBy(admin)
+                        .type(TransactionType.CREDIT)
+                        .amount(amount)
+                        .request(request)
+                        .comment("Начисление за заявку №" + request.getId())
+                        .createdAt(LocalDateTime.now())
+                        .build());
+            }
+        }
+    }
+
+    @Transactional
+    public void returnRequest(Long id, User admin, String comment) {
+        Request request = requestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Заявка не найдена"));
+        if (request.getStatus() != RequestStatus.PENDING_REVIEW) {
+            throw new RuntimeException("Вернуть на доработку можно только заявку «На проверке»");
+        }
+        request.setStatus(RequestStatus.IN_PROGRESS);
+        requestRepository.save(request);
+        logComment(request, admin, "Администратор вернул заявку на доработку. " + comment);
     }
 
     @Transactional

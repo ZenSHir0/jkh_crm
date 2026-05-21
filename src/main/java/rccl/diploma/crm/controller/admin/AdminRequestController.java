@@ -118,6 +118,32 @@ public class AdminRequestController {
         return "redirect:/admin/requests/" + id;
     }
 
+    @PostMapping("/{id}/approve")
+    public String approveRequest(@PathVariable Long id, Authentication authentication,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            requestService.approveRequest(id, getAdmin(authentication));
+            redirectAttributes.addFlashAttribute("success", "Выполнение подтверждено, начисление проведено");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
+    @PostMapping("/{id}/return")
+    public String returnRequest(@PathVariable Long id,
+                                @RequestParam String comment,
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            requestService.returnRequest(id, getAdmin(authentication), comment);
+            redirectAttributes.addFlashAttribute("success", "Заявка возвращена на доработку");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/admin/requests/" + id;
+    }
+
     @PostMapping("/{id}/accept")
     public String acceptRequest(@PathVariable Long id, Authentication authentication,
                                 RedirectAttributes redirectAttributes) {

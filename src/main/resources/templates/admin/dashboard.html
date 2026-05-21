@@ -32,6 +32,7 @@
             <th>ФИО</th>
             <th>Роль</th>
             <th>Статус</th>
+            <th>Баланс</th>
             <th style="width: 220px;">Действия</th>
         </tr>
         </thead>
@@ -45,6 +46,13 @@
             <td>
                 <span class="status" th:classappend="${user.enabled ? 'status-active' : 'status-done'}"
                       th:text="${user.enabled ? 'Активен' : 'Отключён'}"></span>
+            </td>
+            <td>
+                <a th:if="${user.role.name() == 'MASTER'}"
+                   th:href="@{/admin/masters/{id}/balance(id=${user.id})}"
+                   th:text="${user.balance + ' ₽'}"
+                   class="fw-semibold text-decoration-none"></a>
+                <span th:unless="${user.role.name() == 'MASTER'}" class="text-muted">—</span>
             </td>
             <td>
                 <div class="user-actions">

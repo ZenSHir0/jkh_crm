@@ -117,8 +117,13 @@
 
                     <form th:if="${request.status.name() == 'IN_PROGRESS'}"
                           th:action="@{/requests/{id}/complete(id=${request.id})}" method="post">
-                        <button type="submit" class="btn btn-primary w-100">Работа выполнена</button>
+                        <button type="submit" class="btn btn-primary w-100">Отправить на проверку</button>
                     </form>
+
+                    <div th:if="${request.status.name() == 'PENDING_REVIEW'}"
+                         class="text-center text-muted py-2 small">
+                        Работа отправлена на проверку администратору
+                    </div>
 
                     <form th:if="${request.status.name() == 'DONE' or request.status.name() == 'REJECTED'}"
                           th:action="@{/requests/{id}/reopen(id=${request.id})}" method="post">
