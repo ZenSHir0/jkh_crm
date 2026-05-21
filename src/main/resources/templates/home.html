@@ -12,7 +12,7 @@
     <h1>Добро пожаловать в CRM, <span th:text="${#authentication.principal.name}"/> <span th:text="${#authentication.principal.lastName}"/>!</h1>
     <p>Вы вошли как <span th:text="${#authentication.principal.username}"></span></p>
     <a th:if="${#authorization.expression('!hasRole(''ADMIN'')')}" href="/requests/my" class="btn btn-primary">Мои заявки</a>
-    <a href="/requests/new" class="btn btn-primary">Создать заявку</a>
+    <a th:if="${#authorization.expression('hasRole(''RESIDENT'')')}" href="/requests/new" class="btn btn-primary">Создать заявку</a>
     <a href="/profile" class="btn btn-primary">Профиль</a>
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/dashboard" class="btn btn-primary">Список пользователей</a>
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/requests" class="btn btn-primary">Список заявок</a>

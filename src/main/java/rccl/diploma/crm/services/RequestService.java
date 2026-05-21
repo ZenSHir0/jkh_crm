@@ -86,11 +86,6 @@ public class RequestService {
         }
     }
 
-    public Page<Request> getRequestsByResident(User resident, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return requestRepository.findByResident(resident, pageable);
-    }
-
     public Page<Request> getRequestsForUser(User user, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         if (user.getRole() == Role.MASTER) {
