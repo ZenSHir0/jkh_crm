@@ -16,6 +16,7 @@
     <a href="/profile" class="btn btn-primary">Профиль</a>
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/dashboard" class="btn btn-primary">Список пользователей</a>
     <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/requests" class="btn btn-primary">Список заявок</a>
+    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" href="/admin/buildings" class="btn btn-primary">Список домов</a>
 </div>
 </body>
 </html>
