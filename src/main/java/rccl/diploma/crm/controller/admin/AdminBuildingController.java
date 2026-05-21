@@ -18,8 +18,11 @@ public class AdminBuildingController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("buildings", buildingRepository.findAll());
+    public String list(@RequestParam(required = false) String search, Model model) {
+        model.addAttribute("buildings", (search != null && !search.isBlank())
+                ? buildingRepository.findByAddressContainingIgnoreCase(search)
+                : buildingRepository.findAll());
+        model.addAttribute("search", search);
         return "admin/buildings";
     }
 

@@ -11,7 +11,19 @@
 <div class="container mt-4">
     <h2>Список заявок</h2>
 
+    <form method="get" class="mb-3">
+        <div class="input-group" style="max-width: 420px;">
+            <input type="text" name="search" class="form-control"
+                   placeholder="Поиск по заголовку или описанию..."
+                   th:value="${search}">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a th:if="${search != null and !#strings.isEmpty(search)}"
+               href="/admin/requests" class="btn btn-outline-secondary">✕</a>
+        </div>
+    </form>
+
     <form method="get" class="mb-4">
+        <input type="hidden" name="search" th:value="${search}">
         <div class="row g-2 align-items-end">
             <div class="col-md-3">
                 <label for="status" class="form-label">Статус</label>

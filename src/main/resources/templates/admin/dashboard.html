@@ -10,7 +10,19 @@
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"/>
 <div class="container mt-4 mb-5">
-    <h4 class="mb-4">Список пользователей</h4>
+    <h4 class="mb-3">Список пользователей</h4>
+
+    <form method="get" class="mb-4">
+        <div class="input-group" style="max-width: 420px;">
+            <input type="text" name="search" class="form-control"
+                   placeholder="Поиск по имени, логину, email..."
+                   th:value="${search}">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a th:if="${search != null and !#strings.isEmpty(search)}"
+               href="/admin/dashboard" class="btn btn-outline-secondary">✕</a>
+        </div>
+    </form>
+
     <table class="table table-hover">
         <thead>
         <tr>

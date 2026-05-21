@@ -41,6 +41,7 @@ public class AdminRequestController {
     public String listRequests(Model model,
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(required = false) String search,
                                @RequestParam(required = false) RequestStatus status,
                                @RequestParam(required = false) RequestType type,
                                @RequestParam(required = false) LocalDate startDate,
@@ -49,6 +50,13 @@ public class AdminRequestController {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Specification<Request> spec = (root, query, cb) -> cb.conjunction();
+        if (search != null && !search.isBlank()) {
+            String like = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, q, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("title")), like),
+                    cb.like(cb.lower(root.get("description")), like)
+            ));
+        }
         if (status != null) {
             spec = spec.and((root, q, cb) -> cb.equal(root.get("status"), status));
         }
@@ -69,6 +77,7 @@ public class AdminRequestController {
         model.addAttribute("totalPages", requests.getTotalPages());
         model.addAttribute("statuses", RequestStatus.values());
         model.addAttribute("types", RequestType.values());
+        model.addAttribute("search", search);
         model.addAttribute("selectedStatus", status);
         model.addAttribute("selectedType", type);
         model.addAttribute("startDate", startDate);
