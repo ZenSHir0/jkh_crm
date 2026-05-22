@@ -78,19 +78,6 @@
              href="/profile">Профиль</a>
         </li>
 
-        <!-- Разделитель -->
-        <li class="nav-item nav-divider-item" aria-hidden="true"></li>
-
-        <!-- Имя + роль -->
-        <li class="nav-item">
-          <span class="nav-user-info">
-            <span class="nav-username" th:text="${#authentication.principal.name}"></span>
-            <span class="nav-role-badge role-admin"    sec:authorize="hasRole('ADMIN')">Админ</span>
-            <span class="nav-role-badge role-master"   sec:authorize="hasRole('MASTER')">Мастер</span>
-            <span class="nav-role-badge role-resident" sec:authorize="hasRole('RESIDENT')">Житель</span>
-          </span>
-        </li>
-
         <!-- Выход -->
         <li class="nav-item">
           <a class="nav-link logout" href="/logout">Выход</a>
