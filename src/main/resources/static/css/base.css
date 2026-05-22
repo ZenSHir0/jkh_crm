@@ -5,6 +5,8 @@
 .navbar {
     height: 56px;
     background: #1A1A2E !important;
+    position: relative;
+    z-index: 1030;
 }
 
 .navbar-brand {
@@ -127,19 +129,25 @@
 /* Мобильное меню */
 @media (max-width: 991px) {
     .navbar-collapse {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        z-index: 1029;
         background: #1A1A2E;
-        padding: 12px 0 16px;
-        margin-top: 8px;
+        padding: 8px 0 14px;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
 
     .navbar-nav .nav-link {
-        padding: 8px 16px !important;
+        padding: 9px 20px !important;
         border-radius: 0;
     }
 
-    .nav-user-info {
-        padding: 8px 16px 4px;
+    .nav-balance {
+        margin: 4px 20px;
+        display: inline-block;
     }
 }
 
