@@ -23,58 +23,58 @@
         <!-- Главная — для всех -->
         <li class="nav-item">
           <a class="nav-link"
-             th:classappend="${#request.requestURI == '/home'} ? ' active' : ''"
+             th:classappend="${currentUri == '/home'} ? ' active' : ''"
              href="/home">Главная</a>
         </li>
 
         <!-- ═══ ADMIN ═══ -->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/admin/requests')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/admin/requests')} ? ' active' : ''"
              href="/admin/requests">Заявки</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/admin/dashboard') or #request.requestURI.startsWith('/admin/masters')} ? ' active' : ''"
+             th:classappend="${currentUri != null and (currentUri.startsWith('/admin/dashboard') or currentUri.startsWith('/admin/masters'))} ? ' active' : ''"
              href="/admin/dashboard">Пользователи</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/admin/buildings')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/admin/buildings')} ? ' active' : ''"
              href="/admin/buildings">Дома</a>
         </li>
 
         <!-- ═══ MASTER ═══ -->
         <li class="nav-item" sec:authorize="hasRole('MASTER')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/requests')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/requests')} ? ' active' : ''"
              href="/requests/my">Мои заявки</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('MASTER')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/profile')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
              href="/profile">Профиль</a>
         </li>
 
         <!-- ═══ RESIDENT ═══ -->
         <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI == '/requests/my'} ? ' active' : ''"
+             th:classappend="${currentUri == '/requests/my'} ? ' active' : ''"
              href="/requests/my">Мои заявки</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI == '/requests/new'} ? ' active' : ''"
+             th:classappend="${currentUri == '/requests/new'} ? ' active' : ''"
              href="/requests/new">Новая заявка</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/meters')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/meters')} ? ' active' : ''"
              href="/meters/submit">Счётчики</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
           <a class="nav-link"
-             th:classappend="${#request.requestURI.startsWith('/profile')} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
              href="/profile">Профиль</a>
         </li>
 
@@ -85,9 +85,9 @@
         <li class="nav-item">
           <span class="nav-user-info">
             <span class="nav-username" th:text="${#authentication.principal.name}"></span>
-            <span class="nav-role-badge role-admin"     sec:authorize="hasRole('ADMIN')">Админ</span>
-            <span class="nav-role-badge role-master"    sec:authorize="hasRole('MASTER')">Мастер</span>
-            <span class="nav-role-badge role-resident"  sec:authorize="hasRole('RESIDENT')">Житель</span>
+            <span class="nav-role-badge role-admin"    sec:authorize="hasRole('ADMIN')">Админ</span>
+            <span class="nav-role-badge role-master"   sec:authorize="hasRole('MASTER')">Мастер</span>
+            <span class="nav-role-badge role-resident" sec:authorize="hasRole('RESIDENT')">Житель</span>
           </span>
         </li>
 
