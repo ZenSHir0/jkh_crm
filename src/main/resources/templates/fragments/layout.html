@@ -1,15 +1,103 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
   <div class="container-fluid px-4">
+
+    <!-- Логотип -->
     <a class="navbar-brand" href="/home">ЖКХ<span>.</span>Портал</a>
-    <ul class="navbar-nav ms-auto flex-row gap-1">
-      <li class="nav-item"><a class="nav-link" href="/home">Главная</a></li>
-      <li class="nav-item"><a class="nav-link" href="/requests/new">Заявки</a></li>
-      <li class="nav-item"><a class="nav-link" href="/meters/submit">Счётчики</a></li>
-      <li class="nav-item"><a class="nav-link logout" href="/logout">Выход</a></li>
-    </ul>
+
+    <!-- Гамбургер (мобильные) -->
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu" aria-expanded="false" aria-label="Меню">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+
+        <!-- Главная — для всех -->
+        <li class="nav-item">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI == '/home'} ? ' active' : ''"
+             href="/home">Главная</a>
+        </li>
+
+        <!-- ═══ ADMIN ═══ -->
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/admin/requests')} ? ' active' : ''"
+             href="/admin/requests">Заявки</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/admin/dashboard') or #request.requestURI.startsWith('/admin/masters')} ? ' active' : ''"
+             href="/admin/dashboard">Пользователи</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/admin/buildings')} ? ' active' : ''"
+             href="/admin/buildings">Дома</a>
+        </li>
+
+        <!-- ═══ MASTER ═══ -->
+        <li class="nav-item" sec:authorize="hasRole('MASTER')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/requests')} ? ' active' : ''"
+             href="/requests/my">Мои заявки</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('MASTER')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/profile')} ? ' active' : ''"
+             href="/profile">Профиль</a>
+        </li>
+
+        <!-- ═══ RESIDENT ═══ -->
+        <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI == '/requests/my'} ? ' active' : ''"
+             href="/requests/my">Мои заявки</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI == '/requests/new'} ? ' active' : ''"
+             href="/requests/new">Новая заявка</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/meters')} ? ' active' : ''"
+             href="/meters/submit">Счётчики</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
+          <a class="nav-link"
+             th:classappend="${#request.requestURI.startsWith('/profile')} ? ' active' : ''"
+             href="/profile">Профиль</a>
+        </li>
+
+        <!-- Разделитель -->
+        <li class="nav-item nav-divider-item" aria-hidden="true"></li>
+
+        <!-- Имя + роль -->
+        <li class="nav-item">
+          <span class="nav-user-info">
+            <span class="nav-username" th:text="${#authentication.principal.name}"></span>
+            <span class="nav-role-badge role-admin"     sec:authorize="hasRole('ADMIN')">Админ</span>
+            <span class="nav-role-badge role-master"    sec:authorize="hasRole('MASTER')">Мастер</span>
+            <span class="nav-role-badge role-resident"  sec:authorize="hasRole('RESIDENT')">Житель</span>
+          </span>
+        </li>
+
+        <!-- Выход -->
+        <li class="nav-item">
+          <a class="nav-link logout" href="/logout">Выход</a>
+        </li>
+
+      </ul>
+    </div>
   </div>
 </nav>
 </html>

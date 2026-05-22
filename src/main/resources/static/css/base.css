@@ -31,6 +31,11 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+.navbar-nav .nav-link.active {
+    color: #fff !important;
+    background: rgba(83, 74, 183, 0.55);
+}
+
 .navbar-nav .nav-link.logout {
     color: #F09595 !important;
     border: 1px solid rgba(240, 149, 149, 0.3);
@@ -38,6 +43,91 @@
 
 .navbar-nav .nav-link.logout:hover {
     background: rgba(240, 149, 149, 0.15);
+}
+
+/* Вертикальный разделитель перед блоком пользователя */
+.nav-divider-item {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    align-self: center;
+    margin: 0 4px;
+}
+
+@media (max-width: 991px) {
+    .nav-divider-item { display: none; }
+}
+
+/* Блок "Имя · Роль" */
+.nav-user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+}
+
+.nav-username {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-role-badge {
+    font-size: 0.65rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 50rem;
+}
+
+.nav-role-badge.role-admin {
+    background: rgba(83, 74, 183, 0.45);
+    color: #c4bfff;
+}
+
+.nav-role-badge.role-master {
+    background: rgba(29, 158, 117, 0.35);
+    color: #7adec2;
+}
+
+.nav-role-badge.role-resident {
+    background: rgba(209, 154, 42, 0.35);
+    color: #f0c97a;
+}
+
+/* Гамбургер на тёмном фоне */
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.25);
+    padding: 4px 8px;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255%2C255%2C255%2C0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.4);
+}
+
+/* Мобильное меню */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: #1A1A2E;
+        padding: 12px 0 16px;
+        margin-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .navbar-nav .nav-link {
+        padding: 8px 16px !important;
+        border-radius: 0;
+    }
+
+    .nav-user-info {
+        padding: 8px 16px 4px;
+    }
 }
 
 .card-header {
