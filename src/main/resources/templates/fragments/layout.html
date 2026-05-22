@@ -55,6 +55,10 @@
              th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
              href="/profile">Профиль</a>
         </li>
+        <li class="nav-item" sec:authorize="hasRole('MASTER')">
+          <span class="nav-balance"
+                th:text="${#authentication.principal.balance + ' ₽'}"></span>
+        </li>
 
         <!-- ═══ RESIDENT ═══ -->
         <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
@@ -77,6 +81,9 @@
              th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
              href="/profile">Профиль</a>
         </li>
+
+        <!-- Разделитель -->
+        <li class="nav-item nav-divider-item" aria-hidden="true"></li>
 
         <!-- Выход -->
         <li class="nav-item">

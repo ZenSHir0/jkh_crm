@@ -97,6 +97,19 @@
     color: #f0c97a;
 }
 
+/* Баланс мастера в навбаре */
+.nav-balance {
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    color: #7adec2;
+    background: rgba(29, 158, 117, 0.2);
+    border: 1px solid rgba(29, 158, 117, 0.35);
+    border-radius: 50rem;
+    padding: 3px 10px;
+    letter-spacing: 0.02em;
+}
+
 /* Гамбургер на тёмном фоне */
 .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.25);
