@@ -2,15 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
 
+<!-- ══ NAVBAR ══ -->
 <nav th:fragment="navbar" class="navbar navbar-expand-lg"
      xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
   <div class="container-fluid px-4">
 
-    <!-- Логотип -->
     <a class="navbar-brand" href="/home">ЖКХ<span>.</span>Портал</a>
 
-    <!-- Гамбургер (мобильные) -->
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse" data-bs-target="#navbarMenu"
             aria-controls="navbarMenu" aria-expanded="false" aria-label="Меню">
@@ -35,7 +34,7 @@
         </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
           <a class="nav-link"
-             th:classappend="${currentUri != null and (currentUri.startsWith('/admin/dashboard') or currentUri.startsWith('/admin/masters'))} ? ' active' : ''"
+             th:classappend="${currentUri != null and currentUri.startsWith('/admin/dashboard')} ? ' active' : ''"
              href="/admin/dashboard">Пользователи</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
@@ -82,10 +81,8 @@
              href="/profile">Профиль</a>
         </li>
 
-        <!-- Разделитель -->
         <li class="nav-item nav-divider-item" aria-hidden="true"></li>
 
-        <!-- Выход -->
         <li class="nav-item">
           <a class="nav-link logout" href="/logout">Выход</a>
         </li>
@@ -94,4 +91,50 @@
     </div>
   </div>
 </nav>
+
+<!-- ══ FOOTER ══ -->
+<footer th:fragment="footer" class="site-footer"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="foot-brand">ЖКХ<em>.</em>Портал</div>
+        <div class="foot-tagline">Цифровое управление жилым фондом</div>
+        <div class="foot-diploma">Дипломный проект · 2026</div>
+      </div>
+      <div class="col-4 col-lg-2 offset-lg-1">
+        <div class="foot-col-label">Жителям</div>
+        <ul class="foot-links">
+          <li><a href="/requests/my">Мои заявки</a></li>
+          <li><a href="/requests/new">Новая заявка</a></li>
+          <li><a href="/meters/submit">Счётчики</a></li>
+          <li><a href="/profile">Профиль</a></li>
+        </ul>
+      </div>
+      <div class="col-4 col-lg-2">
+        <div class="foot-col-label">Управление</div>
+        <ul class="foot-links">
+          <li><a href="/admin/requests">Заявки</a></li>
+          <li><a href="/admin/dashboard">Пользователи</a></li>
+          <li><a href="/admin/buildings">Дома</a></li>
+        </ul>
+      </div>
+      <div class="col-4 col-lg-2">
+        <div class="foot-col-label">Аккаунт</div>
+        <ul class="foot-links">
+          <li><a href="/profile">Профиль</a></li>
+          <li><a href="/profile/change-password">Сменить пароль</a></li>
+          <li><a href="/logout">Выход</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="foot-hr">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <span class="foot-copy">© 2026 ЖКХ.Портал. Все права защищены.</span>
+      <span class="foot-version">v1.0.0</span>
+    </div>
+  </div>
+</footer>
+
 </html>

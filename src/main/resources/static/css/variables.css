@@ -1,73 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Nunito:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Типографика */
-    --bs-body-font-family:      'Nunito', sans-serif;
-    --bs-body-font-size:        1rem;
-    --bs-body-font-weight:      400;
-    --bs-body-line-height:      1.6;
+  /* ── Core Design Tokens ── */
+  --accent:       #8B7FF5;
+  --accent-light: rgba(139,127,245,.15);
+  --accent-dark:  #6A5FE0;
+  --bg:           #181630;
+  --navy:         #F0EEFF;
+  --navy2:        #CEC9F5;
+  --muted:        #8480B8;
+  --border:       rgba(255,255,255,.09);
+  --card:         #211F3E;
+  --success:      #1CC98F;
+  --warning:      #E8A520;
+  --danger:       #D94545;
+  --r:            14px;
+  --r-sm:         8px;
 
-    /* Цвета фона и текста */
-    --bs-body-bg:               #F5F4F0;
-    --bs-body-color:            #26215C;
-    --bs-secondary-bg:          #EEEDFE;
-    --bs-tertiary-bg:           #E3E1FA;
+  /* ── Bootstrap Variable Overrides ── */
+  --bs-body-font-family:      'Inter', sans-serif;
+  --bs-body-font-size:        0.875rem;
+  --bs-body-font-weight:      400;
+  --bs-body-line-height:      1.55;
+  --bs-body-bg:               #181630;
+  --bs-body-color:            #CEC9F5;
 
-    /* Акцентные цвета Bootstrap */
-    --bs-primary:               #534AB7;
-    --bs-primary-rgb:           83, 74, 183;
-    --bs-success:               #1D9E75;
-    --bs-success-rgb:           29, 158, 117;
-    --bs-danger:                #B74141;
-    --bs-warning:               #D19A2A;
-    --bs-info:                  #534AB7;
+  --bs-secondary-bg:          #211F3E;
+  --bs-tertiary-bg:           #1A1838;
+  --bs-border-color:          rgba(255,255,255,.09);
+  --bs-border-radius:         14px;
+  --bs-border-radius-sm:      8px;
+  --bs-border-radius-lg:      14px;
+  --bs-border-radius-xl:      20px;
+  --bs-border-radius-pill:    50rem;
 
-    /* Бордеры */
-    --bs-border-color:          #D9D7F0;
-    --bs-border-radius:         10px;
-    --bs-border-radius-sm:      6px;
-    --bs-border-radius-lg:      16px;
-    --bs-border-radius-xl:      20px;
-    --bs-border-radius-pill:    50rem;
+  --bs-primary:               #8B7FF5;
+  --bs-primary-rgb:           139, 127, 245;
+  --bs-success:               #1CC98F;
+  --bs-success-rgb:           28, 201, 143;
+  --bs-danger:                #D94545;
+  --bs-danger-rgb:            217, 69, 69;
+  --bs-warning:               #E8A520;
+  --bs-warning-rgb:           232, 165, 32;
 
-    /* Карточки */
-    --bs-card-bg:               #FFFFFF;
-    --bs-card-border-color:     #D9D7F0;
-    --bs-card-border-radius:    var(--bs-border-radius-lg);
-    --bs-card-cap-bg:           #FFFFFF;
-    --bs-card-cap-padding-y:    1rem;
-    --bs-card-cap-padding-x:    1.5rem;
-    --bs-card-inner-border-radius: 15px;
+  --bs-card-bg:               #211F3E;
+  --bs-card-border-color:     rgba(255,255,255,.09);
+  --bs-card-border-radius:    14px;
+  --bs-card-cap-bg:           rgba(255,255,255,.04);
+  --bs-card-cap-padding-y:    0.85rem;
+  --bs-card-cap-padding-x:    1.25rem;
 
-    /* Кнопки */
-    --bs-btn-font-family:       'Nunito', sans-serif;
-    --bs-btn-font-weight:       600;
-    --bs-btn-border-radius:     var(--bs-border-radius);
-    --bs-btn-padding-x:         1.1rem;
-    --bs-btn-padding-y:         0.45rem;
-    --bs-btn-font-size:         0.875rem;
+  --bs-input-bg:              #211F3E;
+  --bs-input-border-color:    rgba(255,255,255,.09);
+  --bs-input-focus-border-color: #8B7FF5;
+  --bs-input-focus-box-shadow: 0 0 0 3px rgba(139,127,245,.1);
+  --bs-input-color:           #CEC9F5;
+  --bs-input-placeholder-color: #8480B8;
 
-    /* Таблицы */
-    --bs-table-border-color:    #D9D7F0;
-    --bs-table-striped-bg:      #EEEDFE;
+  --bs-table-bg:              transparent;
+  --bs-table-color:           #CEC9F5;
+  --bs-table-border-color:    rgba(255,255,255,.09);
+  --bs-table-striped-bg:      rgba(255,255,255,.03);
 
-    /* Навбар */
-    --bs-navbar-padding-y:      0;
+  --bs-btn-font-family:       'Inter', sans-serif;
+  --bs-btn-font-weight:       700;
+  --bs-btn-border-radius:     8px;
+  --bs-btn-padding-x:         1rem;
+  --bs-btn-padding-y:         0.45rem;
+  --bs-btn-font-size:         0.82rem;
 
-    /* Формы */
-    --bs-input-bg:              #FFFFFF;
-    --bs-input-border-color:    #D9D7F0;
-    --bs-input-focus-border-color: #534AB7;
-    --bs-input-focus-box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.14);
-    --bs-input-border-radius:   var(--bs-border-radius);
+  --bs-navbar-padding-y:      0;
 
-    /* Наши токены */
-    --accent:                   #534AB7;
-    --accent-light:             #EEEDFE;
-    --accent-dark:              #3C3489;
-    --text-muted-custom:        #6F6A99;
-    --success-bg:               #DDF6EE;
-    --warning-bg:               #F8EDD1;
-    --danger-bg:                #FCEAEA;
-    --danger:                   #A32D2D;
+  /* ── Compat aliases for old templates ── */
+  --text-muted-custom:        #8480B8;
+  --success-bg:               rgba(28,201,143,.18);
+  --warning-bg:               rgba(232,165,32,.18);
+  --danger-bg:                rgba(217,69,69,.18);
+  --accent-light-old:         rgba(139,127,245,.15);
 }

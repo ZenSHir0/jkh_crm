@@ -1,122 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Баланс мастера</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/auth.css}">
-    <link rel="stylesheet" th:href="@{/css/request-details.css}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${master.fullName} + ' — Баланс'">Баланс мастера</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <nav th:replace="~{fragments/layout :: navbar}"/>
 
-<div class="container mt-4 mb-5">
+<div class="page-wrap">
 
-    <div th:if="${success}" class="auth-alert success mb-3" th:text="${success}"></div>
-    <div th:if="${error}" class="auth-alert danger mb-3" th:text="${error}"></div>
+  <div th:if="${success}" class="auth-alert success" th:text="${success}"></div>
+  <div th:if="${error}"   class="auth-alert danger"  th:text="${error}"></div>
 
-    <div class="d-flex align-items-center gap-3 mb-4">
-        <a href="/admin/dashboard" class="btn btn-sm btn-outline-secondary">← Назад</a>
-        <div>
-            <h4 class="mb-0" th:text="${master.fullName}"></h4>
-            <small class="text-muted">Баланс и начисления</small>
+  <div class="page-hero admin-hero">
+    <div>
+      <div class="hero-eyebrow">
+        <a href="/admin/dashboard" style="color:var(--muted);text-decoration:none">
+          <i class="bi bi-arrow-left"></i> Пользователи
+        </a>
+      </div>
+      <h1 class="hero-title" th:text="${master.fullName}">Мастер</h1>
+      <p class="hero-sub">Баланс и начисления</p>
+    </div>
+    <div class="balance-card" style="min-width:180px;padding:1rem 1.25rem">
+      <div class="bal-label">Текущий баланс</div>
+      <div class="bal-amount" th:text="${master.balance + ' ₽'}">0 ₽</div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Transaction history -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">История начислений</span></div>
+
+        <div th:if="${transactions.isEmpty()}"
+             style="padding:3rem 1.25rem;text-align:center;color:var(--muted)">
+          <div style="font-size:2rem;margin-bottom:.5rem;opacity:.4"><i class="bi bi-receipt"></i></div>
+          <p style="margin:0;font-size:.875rem">Операций пока нет</p>
         </div>
-        <span class="ms-auto fs-4 fw-bold" th:text="${master.balance + ' ₽'}"></span>
+
+        <div th:each="tx : ${transactions}"
+             style="display:flex;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid var(--border)">
+          <div style="flex:1">
+            <div class="req-title-main" th:text="${tx.type.displayName}"></div>
+            <div class="req-type" th:text="${tx.comment}"></div>
+            <div class="req-type"
+                 th:text="${#temporals.format(tx.createdAt, 'dd.MM.yyyy HH:mm')} + ' · ' + ${tx.createdBy.fullName}"></div>
+          </div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;white-space:nowrap"
+                th:classappend="${tx.type.name() == 'FINE' or tx.type.name() == 'PAYOUT'} ? 'bal-minus' : 'bal-plus'"
+                th:text="${(tx.type.name() == 'FINE' or tx.type.name() == 'PAYOUT') ? '−' : '+'} + ${tx.amount} + ' ₽'">
+          </span>
+        </div>
+      </div>
     </div>
 
-    <div class="row g-4">
+    <!-- Actions panel -->
+    <div class="col-lg-4">
+      <div class="actions-panel">
+        <div class="actions-panel-header">Управление балансом</div>
+        <div style="padding:1rem;display:flex;flex-direction:column;gap:.75rem">
 
-        <!-- История транзакций -->
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">История начислений</div>
-                <div class="card-body p-0">
-                    <div th:if="${transactions.isEmpty()}" class="text-center py-4 text-muted">
-                        Операций пока нет
-                    </div>
-                    <div th:each="tx : ${transactions}" class="field-row px-4">
-                        <div class="d-flex flex-column">
-                            <span class="field-value" th:text="${tx.type.displayName}"></span>
-                            <small class="text-muted" th:text="${tx.comment}"></small>
-                            <small class="text-muted"
-                                   th:text="${#temporals.format(tx.createdAt, 'dd.MM.yyyy HH:mm')} + ' · ' + ${tx.createdBy.fullName}">
-                            </small>
-                        </div>
-                        <span class="ms-auto fw-bold"
-                              th:classappend="${tx.type.name() == 'FINE' or tx.type.name() == 'PAYOUT'} ? 'text-danger' : 'text-success'"
-                              th:text="${(tx.type.name() == 'FINE' ? '−' : (tx.type.name() == 'PAYOUT' ? '−' : '+'))} + ${tx.amount} + ' ₽'">
-                        </span>
-                    </div>
+          <!-- Payout -->
+          <form th:action="@{/admin/masters/{id}/payout(id=${master.id})}" method="post">
+            <button type="submit" class="btn-prim w-100" style="justify-content:center"
+                    th:disabled="${master.balance <= 0}">
+              <i class="bi bi-cash-coin"></i>
+              Выплатить <span th:text="${master.balance + ' ₽'}"></span>
+            </button>
+          </form>
+
+          <hr style="border-color:var(--border);margin:.25rem 0">
+
+          <!-- Bonus -->
+          <div>
+            <button type="button" class="btn-ghost w-100" style="justify-content:center"
+                    onclick="toggleForm('bonusForm')">
+              <i class="bi bi-plus-circle"></i> Начислить бонус
+            </button>
+            <div id="bonusForm" class="reject-form" style="border-color:rgba(139,127,245,.25);background:rgba(139,127,245,.07)">
+              <form th:action="@{/admin/masters/{id}/bonus(id=${master.id})}" method="post"
+                    style="display:flex;flex-direction:column;gap:.65rem">
+                <div>
+                  <label class="form-label-custom">Сумма (₽)</label>
+                  <input type="number" name="amount" class="form-input" min="1" required placeholder="1000">
                 </div>
-            </div>
-        </div>
-
-        <!-- Панель действий -->
-        <div class="col-lg-4">
-            <div class="actions-panel">
-                <div class="actions-panel-header">Управление балансом</div>
-                <div class="p-3 d-grid gap-3">
-
-                    <!-- Выплата -->
-                    <form th:action="@{/admin/masters/{id}/payout(id=${master.id})}" method="post">
-                        <button type="submit" class="btn btn-success w-100"
-                                th:disabled="${master.balance <= 0}">
-                            Выплатить <span th:text="${master.balance + ' ₽'}"></span>
-                        </button>
-                    </form>
-
-                    <hr class="my-1" style="border-color: var(--bs-border-color);">
-
-                    <!-- Бонус -->
-                    <div>
-                        <button type="button" class="btn btn-outline-primary w-100"
-                                onclick="toggleForm('bonusForm')">Начислить бонус</button>
-                        <div id="bonusForm" class="reject-form" style="border-color: var(--bs-border-color); background: var(--accent-light);">
-                            <form th:action="@{/admin/masters/{id}/bonus(id=${master.id})}" method="post">
-                                <label class="auth-label">Сумма (₽)</label>
-                                <input type="number" name="amount" class="auth-input" min="1" required>
-                                <label class="auth-label mt-2">Комментарий</label>
-                                <input type="text" name="comment" class="auth-input" required>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button type="submit" class="btn btn-primary flex-fill">Начислить</button>
-                                    <button type="button" class="btn btn-outline-secondary flex-fill"
-                                            onclick="toggleForm('bonusForm')">Отмена</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Штраф -->
-                    <div>
-                        <button type="button" class="btn btn-outline-danger w-100"
-                                onclick="toggleForm('fineForm')">Назначить штраф</button>
-                        <div id="fineForm" class="reject-form">
-                            <form th:action="@{/admin/masters/{id}/fine(id=${master.id})}" method="post">
-                                <label class="auth-label">Сумма штрафа (₽)</label>
-                                <input type="number" name="amount" class="auth-input" min="1" required>
-                                <label class="auth-label mt-2">Причина</label>
-                                <input type="text" name="comment" class="auth-input" required>
-                                <div class="d-flex gap-2 mt-2">
-                                    <button type="submit" class="btn btn-danger flex-fill">Применить</button>
-                                    <button type="button" class="btn btn-outline-secondary flex-fill"
-                                            onclick="toggleForm('fineForm')">Отмена</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
+                <div>
+                  <label class="form-label-custom">Комментарий</label>
+                  <input type="text" name="comment" class="form-input" required placeholder="Бонус за...">
                 </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn-prim flex-fill" style="justify-content:center">Начислить</button>
+                  <button type="button" class="btn-ghost flex-fill" style="justify-content:center"
+                          onclick="toggleForm('bonusForm')">Отмена</button>
+                </div>
+              </form>
             </div>
+          </div>
+
+          <!-- Fine -->
+          <div>
+            <button type="button" class="btn-danger-ghost w-100" style="justify-content:center"
+                    onclick="toggleForm('fineForm')">
+              <i class="bi bi-dash-circle"></i> Назначить штраф
+            </button>
+            <div id="fineForm" class="reject-form">
+              <form th:action="@{/admin/masters/{id}/fine(id=${master.id})}" method="post"
+                    style="display:flex;flex-direction:column;gap:.65rem">
+                <div>
+                  <label class="form-label-custom">Сумма штрафа (₽)</label>
+                  <input type="number" name="amount" class="form-input" min="1" required placeholder="500">
+                </div>
+                <div>
+                  <label class="form-label-custom">Причина</label>
+                  <input type="text" name="comment" class="form-input" required placeholder="Причина штрафа...">
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-danger flex-fill btn-sm">Применить</button>
+                  <button type="button" class="btn btn-outline-secondary flex-fill btn-sm"
+                          onclick="toggleForm('fineForm')">Отмена</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
         </div>
+      </div>
     </div>
+
+  </div>
 </div>
 
-<script>
-    function toggleForm(id) {
-        document.getElementById(id).classList.toggle('visible');
-    }
-</script>
+<footer th:replace="~{fragments/layout :: footer}"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleForm(id) {
+    document.getElementById(id).classList.toggle('visible');
+  }
+</script>
 </body>
 </html>

@@ -2,75 +2,78 @@
    ФУТЕР
    ============================================================ */
 .site-footer {
-    background: #100E28;
-    color: rgba(255,255,255,.35);
-    padding: 2.5rem 0 1.25rem;
-    margin-top: 3.5rem;
-    border-top: 2px solid rgba(139,127,245,.3);
+  background: #100E28;
+  color: rgba(255,255,255,.35);
+  padding: 2.5rem 0 1.25rem;
+  margin-top: 3rem;
+  border-top: 2px solid rgba(139,127,245,.35);
 }
 
 .foot-brand {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #fff;
-    text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  color: #fff;
+  text-decoration: none;
 }
 
-.foot-brand span { color: var(--accent); }
+.foot-brand em {
+  color: var(--accent);
+  font-style: normal;
+}
 
 .foot-tagline {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,.22);
-    margin-top: .3rem;
+  font-size: .75rem;
+  color: rgba(255,255,255,.25);
+  margin-top: .25rem;
 }
 
 .foot-diploma {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,.14);
-    margin-top: .85rem;
+  font-size: .68rem;
+  color: rgba(255,255,255,.14);
+  margin-top: .85rem;
 }
 
 .foot-col-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.63rem;
-    font-weight: 600;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.18);
-    margin-bottom: .55rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: .63rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.2);
+  margin-bottom: .55rem;
 }
 
 .foot-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
 }
 
 .foot-links a {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,.35);
-    text-decoration: none;
-    transition: color .12s;
+  font-size: .8rem;
+  color: rgba(255,255,255,.38);
+  text-decoration: none;
+  transition: color .12s;
 }
 
-.foot-links a:hover { color: rgba(255,255,255,.7); }
+.foot-links a:hover { color: rgba(255,255,255,.75); }
 
 .foot-hr {
-    border-color: rgba(255,255,255,.06);
-    margin: 1.25rem 0 1rem;
+  border-color: rgba(255,255,255,.06);
+  margin: 1.25rem 0 1rem;
 }
 
 .foot-copy {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,.2);
+  font-size: .72rem;
+  color: rgba(255,255,255,.2);
 }
 
 .foot-version {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,.12);
-    font-family: 'Space Grotesk', sans-serif;
+  font-size: .68rem;
+  color: rgba(255,255,255,.13);
+  font-family: 'Space Grotesk', sans-serif;
 }

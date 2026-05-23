@@ -1,25 +1,4 @@
-.user-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.role-form {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-}
-
-.role-form .form-select {
-    flex: 1;
-    min-width: 0;
-}
-
-.toggle-delete-row {
-    display: flex;
-    gap: 6px;
-}
-
-.toggle-delete-row .btn {
-    flex: 1;
-}
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+/* user-actions, role-form, toggle-delete-row are in components.css */
