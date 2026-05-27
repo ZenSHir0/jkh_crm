@@ -117,14 +117,24 @@
   <nav th:if="${totalPages > 1}" aria-label="Пагинация" style="margin-top:1.25rem">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
-        <a class="page-link" th:href="@{/admin/requests(page=${currentPage - 1})}">← Назад</a>
+        <a class="page-link" th:href="@{/admin/requests(page=0)}" title="Первая">«</a>
       </li>
-      <li th:each="p : ${#numbers.sequence(0, totalPages - 1)}"
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/requests(page=${currentPage - 1})}" title="Назад">‹</a>
+      </li>
+      <li th:each="p : ${#numbers.sequence(pageStart, pageEnd)}"
           class="page-item" th:classappend="${p == currentPage} ? 'active' : ''">
         <a class="page-link" th:href="@{/admin/requests(page=${p})}" th:text="${p + 1}"></a>
       </li>
+      <li class="page-item disabled">
+        <span class="page-link page-info"
+              th:text="${currentPage + 1} + ' / ' + ${totalPages}"></span>
+      </li>
       <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled' : ''">
-        <a class="page-link" th:href="@{/admin/requests(page=${currentPage + 1})}">Вперёд →</a>
+        <a class="page-link" th:href="@{/admin/requests(page=${currentPage + 1})}" title="Вперёд">›</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/requests(page=${totalPages - 1})}" title="Последняя">»</a>
       </li>
     </ul>
   </nav>

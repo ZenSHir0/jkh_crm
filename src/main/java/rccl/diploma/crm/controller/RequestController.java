@@ -161,9 +161,12 @@ public class RequestController {
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
         Page<Request> requests = requestService.getRequestsForUser(resident, page, size);
-        model.addAttribute("requests", requests.getContent());
+        int totalPages = requests.getTotalPages();
+        model.addAttribute("requests",    requests.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", requests.getTotalPages());
+        model.addAttribute("totalPages",  totalPages);
+        model.addAttribute("pageStart",   Math.max(0, page - 2));
+        model.addAttribute("pageEnd",     Math.min(totalPages - 1, page + 2));
 
         return "requests/my";
     }

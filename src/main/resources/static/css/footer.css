@@ -5,8 +5,9 @@
   background: #100E28;
   color: rgba(255,255,255,.35);
   padding: 2.5rem 0 1.25rem;
-  margin-top: 3rem;
+  margin-top: 0;          /* flex pushes footer to bottom; spacing via page-wrap padding */
   border-top: 2px solid rgba(139,127,245,.35);
+  flex-shrink: 0;         /* never shrink below content height */
 }
 
 .foot-brand {

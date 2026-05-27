@@ -22,11 +22,11 @@
         <div class="hero-eyebrow">Добро пожаловать</div>
         <h1 class="hero-title">
           Добрый день,
-          <span th:text="${#authentication.principal.name}">Житель</span>!
+          <span th:text="${user.name}">Житель</span>!
         </h1>
         <p class="hero-sub">
-          <strong th:text="${#authentication.principal.building?.address ?: 'Адрес не указан'}">ул. Ленина, 10</strong>
-          <span th:if="${#authentication.principal.apartment != null}"> · кв. <span th:text="${#authentication.principal.apartment}"></span></span>
+          <strong th:text="${user.building?.address ?: 'Адрес не указан'}">ул. Ленина, 10</strong>
+          <span th:if="${user.apartment != null}"> · кв. <span th:text="${user.apartment}"></span></span>
           · ЖКХ Портал
         </p>
       </div>
@@ -82,7 +82,7 @@
       <div>
         <div class="hero-eyebrow">Рабочий день</div>
         <h1 class="hero-title">
-          Привет, <span class="green" th:text="${#authentication.principal.name}">Мастер</span>!
+          Привет, <span class="green" th:text="${user.name}">Мастер</span>!
         </h1>
         <p class="hero-sub">ЖКХ Портал · Мастер</p>
       </div>
@@ -109,7 +109,7 @@
         <div class="sec-label">Баланс</div>
         <div class="balance-card">
           <div class="bal-label">Текущий баланс</div>
-          <div class="bal-amount" th:text="${#authentication.principal.balance + ' ₽'}">0 ₽</div>
+          <div class="bal-amount" th:text="${user.balance + ' ₽'}">0 ₽</div>
           <div class="bal-next">Переход в профиль для подробностей</div>
         </div>
       </div>
@@ -122,7 +122,7 @@
       <div>
         <div class="hero-eyebrow">Панель управления</div>
         <h1 class="hero-title">
-          Дашборд, <span th:text="${#authentication.principal.name}">Администратор</span>!
+          Здравствуйте, <span th:text="${user.name}">Администратор</span>!
         </h1>
         <p class="hero-sub">ЖКХ Портал · Администратор</p>
       </div>

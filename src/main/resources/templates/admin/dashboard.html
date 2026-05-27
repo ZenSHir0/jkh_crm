@@ -51,7 +51,7 @@
 
     <div th:each="user : ${users}"
          class="req-row"
-         style="grid-template-columns:44px 1fr 100px 90px 80px 180px;cursor:default">
+         style="grid-template-columns:44px 1fr 100px 90px 80px 180px;cursor:default;align-items:start;padding:.9rem 1.25rem">
       <span class="req-num" th:text="${user.id}"></span>
 
       <div>
@@ -105,6 +105,32 @@
       </div>
     </div>
   </div>
+
+  <!-- Pagination -->
+  <nav th:if="${totalPages > 1}" aria-label="Пагинация" style="margin-top:1.25rem">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/dashboard(page=0,search=${search})}" title="Первая">«</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/dashboard(page=${currentPage - 1},search=${search})}" title="Назад">‹</a>
+      </li>
+      <li th:each="p : ${#numbers.sequence(pageStart, pageEnd)}"
+          class="page-item" th:classappend="${p == currentPage} ? 'active' : ''">
+        <a class="page-link" th:href="@{/admin/dashboard(page=${p},search=${search})}" th:text="${p + 1}"></a>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link page-info"
+              th:text="${currentPage + 1} + ' / ' + ${totalPages}"></span>
+      </li>
+      <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/dashboard(page=${currentPage + 1},search=${search})}" title="Вперёд">›</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled' : ''">
+        <a class="page-link" th:href="@{/admin/dashboard(page=${totalPages - 1},search=${search})}" title="Последняя">»</a>
+      </li>
+    </ul>
+  </nav>
 
 </div>
 

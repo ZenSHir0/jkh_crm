@@ -1,5 +1,7 @@
 package rccl.diploma.crm.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import rccl.diploma.crm.entity.Building;
 import rccl.diploma.crm.entity.User;
@@ -21,6 +23,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public void changeRole(Long userId, Role newRole) {

@@ -25,6 +25,11 @@
              th:classappend="${currentUri == '/home'} ? ' active' : ''"
              href="/home">Главная</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
+             href="/profile">Профиль</a>
+        </li>
 
         <!-- ═══ ADMIN ═══ -->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
@@ -50,11 +55,6 @@
              href="/requests/my">Мои заявки</a>
         </li>
         <li class="nav-item" sec:authorize="hasRole('MASTER')">
-          <a class="nav-link"
-             th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
-             href="/profile">Профиль</a>
-        </li>
-        <li class="nav-item" sec:authorize="hasRole('MASTER')">
           <span class="nav-balance"
                 th:text="${#authentication.principal.balance + ' ₽'}"></span>
         </li>
@@ -74,11 +74,6 @@
           <a class="nav-link"
              th:classappend="${currentUri != null and currentUri.startsWith('/meters')} ? ' active' : ''"
              href="/meters/submit">Счётчики</a>
-        </li>
-        <li class="nav-item" sec:authorize="hasRole('RESIDENT')">
-          <a class="nav-link"
-             th:classappend="${currentUri != null and currentUri.startsWith('/profile')} ? ' active' : ''"
-             href="/profile">Профиль</a>
         </li>
 
         <li class="nav-item nav-divider-item" aria-hidden="true"></li>

@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .requestMatchers("/verify/**", "/register", "/verify", "/login/**", "/uploads/**", "/css/**",
                         "/forgot-password", "/reset-password").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/meters/**").hasRole("RESIDENT")
                 .anyRequest().authenticated()
             )
 

@@ -130,7 +130,9 @@ public class AuthController {
     }
 
     @GetMapping("/home")
-    public String afterLogin() {
+    public String afterLogin(Authentication authentication, Model model) {
+        userRepository.findByUsername(authentication.getName())
+                .ifPresent(u -> model.addAttribute("user", u));
         return "home";
     }
 }

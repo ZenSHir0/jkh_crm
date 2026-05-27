@@ -72,16 +72,19 @@ public class AdminRequestController {
 
         Page<Request> requests = requestRepository.findAll(spec, pageable);
 
-        model.addAttribute("requests", requests.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", requests.getTotalPages());
-        model.addAttribute("statuses", RequestStatus.values());
-        model.addAttribute("types", RequestType.values());
-        model.addAttribute("search", search);
+        int totalPages = requests.getTotalPages();
+        model.addAttribute("requests",       requests.getContent());
+        model.addAttribute("currentPage",    page);
+        model.addAttribute("totalPages",     totalPages);
+        model.addAttribute("pageStart",      Math.max(0, page - 2));
+        model.addAttribute("pageEnd",        Math.min(totalPages - 1, page + 2));
+        model.addAttribute("statuses",       RequestStatus.values());
+        model.addAttribute("types",          RequestType.values());
+        model.addAttribute("search",         search);
         model.addAttribute("selectedStatus", status);
-        model.addAttribute("selectedType", type);
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
+        model.addAttribute("selectedType",   type);
+        model.addAttribute("startDate",      startDate);
+        model.addAttribute("endDate",        endDate);
 
         return "admin/requests";
     }
