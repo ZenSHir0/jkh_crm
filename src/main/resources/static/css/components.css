@@ -72,6 +72,8 @@
 /* ============================================================
    STATUS BADGES
    ============================================================ */
+
+.badge,
 .status {
   display: inline-flex;
   align-items: center;
@@ -83,6 +85,9 @@
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: 4px;
+}
+
+.status {
   white-space: nowrap;
 }
 
@@ -103,11 +108,11 @@
 .status-danger { background: rgba(217,69,69,.18);   color: #F58585; }
 
 /* User role badges */
-.badge-master   { display: inline-flex; align-items: center; gap: 5px; font-size: .68rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(232,165,32,.18); color: #F5C84A; }
-.badge-resident { display: inline-flex; align-items: center; gap: 5px; font-size: .68rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(100,120,255,.18); color: #9DB0FF; }
-.badge-active   { display: inline-flex; align-items: center; gap: 5px; font-size: .68rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(28,201,143,.18);  color: #4DDDB2; }
-.badge-offline  { display: inline-flex; align-items: center; gap: 5px; font-size: .68rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,.07); color: #7470A8; }
-.badge-admin    { display: inline-flex; align-items: center; gap: 5px; font-size: .68rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(139,127,245,.18); color: #B0A8FF; }
+.badge-master   { background: rgba(232,165,32,.18); color: #F5C84A; }
+.badge-resident { background: rgba(100,120,255,.18); color: #9DB0FF; }
+.badge-active   { background: rgba(28,201,143,.18);  color: #4DDDB2; }
+.badge-offline  { background: rgba(255,255,255,.07); color: #7470A8; }
+.badge-admin    { background: rgba(139,127,245,.18); color: #B0A8FF; }
 
 
 /* ============================================================

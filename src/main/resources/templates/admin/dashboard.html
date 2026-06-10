@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,9 +61,9 @@
 
       <!-- Role badge -->
       <span>
-        <span th:if="${user.role.name() == 'MASTER'}"   class="badge-master">Мастер</span>
-        <span th:if="${user.role.name() == 'RESIDENT'}" class="badge-resident">Житель</span>
-        <span th:if="${user.role.name() == 'ADMIN'}"    class="badge-admin">Админ</span>
+        <span th:if="${user.role.name() == 'MASTER'}"   class="badge badge-master">Мастер</span>
+        <span th:if="${user.role.name() == 'RESIDENT'}" class="badge badge-resident">Житель</span>
+        <span th:if="${user.role.name() == 'ADMIN'}"    class="badge badge-admin">Админ</span>
       </span>
 
       <!-- Balance -->
