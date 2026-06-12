@@ -14,149 +14,18 @@
 
 <div class="page-wrap">
 
-  <!-- ══ RESIDENT HOME ══ -->
   <div sec:authorize="hasRole('RESIDENT')">
-    <div class="page-hero">
-      <div>
-        <div class="hero-eyebrow">Добро пожаловать</div>
-        <h1 class="hero-title">
-          Добрый день,
-          <span th:text="${user.name}">Житель</span>!
-        </h1>
-        <p class="hero-sub">
-          <strong th:text="${user.building?.address ?: 'Адрес не указан'}">ул. Ленина, 10</strong>
-          <span th:if="${user.apartment != null}"> · кв. <span th:text="${user.apartment}"></span></span>
-          · ЖКХ Портал
-        </p>
-      </div>
-      <a href="/requests/new" class="btn-prim"><i class="bi bi-plus"></i> Подать заявку</a>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-lg-7">
-        <div class="sec-label">Быстрые действия</div>
-        <div class="card" style="padding:.5rem 1.25rem">
-          <a href="/requests/my" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-clipboard-check"></i></div>
-            <span class="action-btn-label">Мои заявки</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/requests/new" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-clipboard-plus"></i></div>
-            <span class="action-btn-label">Подать новую заявку</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/meters/submit" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-speedometer2"></i></div>
-            <span class="action-btn-label">Передать показания счётчиков</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/profile" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-person"></i></div>
-            <span class="action-btn-label">Профиль</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-5">
-        <div class="sec-label">Справочная информация</div>
-        <div class="card" style="padding:1.25rem">
-          <div style="font-size:.875rem;color:var(--navy2);line-height:1.7">
-            <p style="margin-bottom:.75rem">Через портал вы можете:</p>
-            <ul style="padding-left:1.2rem;color:var(--muted);font-size:.82rem">
-              <li>Подавать заявки на ремонт и обслуживание</li>
-              <li>Отслеживать статус заявок в реальном времени</li>
-              <li>Передавать показания счётчиков</li>
-              <li>Общаться с мастером через комментарии</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div th:replace="~{fragments/home :: resident}"/>
   </div>
 
   <!-- ══ MASTER HOME ══ -->
   <div sec:authorize="hasRole('MASTER')">
-    <div class="page-hero master-hero d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <div>
-        <div class="hero-eyebrow">Рабочий день</div>
-        <h1 class="hero-title">
-          Привет, <span class="green" th:text="${user.name}">Мастер</span>!
-        </h1>
-        <p class="hero-sub">ЖКХ Портал · Мастер</p>
-      </div>
-      <span class="status status-active" style="font-size:.75rem;padding:5px 14px">На смене</span>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-lg-8">
-        <div class="sec-label">Навигация</div>
-        <div class="card" style="padding:.5rem 1.25rem">
-          <a href="/requests/my" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-tools"></i></div>
-            <span class="action-btn-label">Мои заявки</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/profile" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-person"></i></div>
-            <span class="action-btn-label">Профиль и баланс</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="sec-label">Баланс</div>
-        <div class="balance-card">
-          <div class="bal-label">Текущий баланс</div>
-          <div class="bal-amount" th:text="${user.balance + ' ₽'}">0 ₽</div>
-          <div class="bal-next">Переход в профиль для подробностей</div>
-        </div>
-      </div>
-    </div>
+    <div th:replace="~{fragments/home :: master}"/>
   </div>
 
   <!-- ══ ADMIN HOME ══ -->
   <div sec:authorize="hasRole('ADMIN')">
-    <div class="page-hero admin-hero d-flex justify-content-between align-items-center flex-wrap gap-3">
-      <div>
-        <div class="hero-eyebrow">Панель управления</div>
-        <h1 class="hero-title">
-          Здравствуйте, <span th:text="${user.name}">Администратор</span>!
-        </h1>
-        <p class="hero-sub">ЖКХ Портал · Администратор</p>
-      </div>
-      <div class="d-flex gap-2 flex-wrap">
-        <a href="/admin/requests" class="btn-prim">Все заявки <i class="bi bi-arrow-right" style="font-size:.75rem"></i></a>
-      </div>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <div class="sec-label">Управление</div>
-        <div class="card" style="padding:.5rem 1.25rem">
-          <a href="/admin/requests" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-clipboard-check"></i></div>
-            <span class="action-btn-label">Все заявки</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/admin/dashboard" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-people"></i></div>
-            <span class="action-btn-label">Пользователи</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/admin/buildings" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-buildings"></i></div>
-            <span class="action-btn-label">Дома</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-          <a href="/profile" class="action-btn-row">
-            <div class="action-btn-icon"><i class="bi bi-person-gear"></i></div>
-            <span class="action-btn-label">Профиль</span>
-            <i class="bi bi-chevron-right ms-auto" style="font-size:.7rem;color:var(--muted)"></i>
-          </a>
-        </div>
-      </div>
-    </div>
+    <div th:replace="~{fragments/home :: admin}"/>
   </div>
 
 </div>

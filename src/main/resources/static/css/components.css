@@ -623,7 +623,15 @@
   background: var(--border);
 }
 
+.home-card {
+  padding:.5rem 1.25rem
+}
 
+.home-bi-arrow {
+  margin-left: auto;
+  font-size: .7rem;
+  color: var(--muted);
+}
 /* ============================================================
    ACTION BUTTONS (sidebar)
    ============================================================ */
@@ -672,7 +680,7 @@
   display: flex;
   align-items: center;
   gap: .75rem;
-  padding: .75rem 0;
+  padding: 2.75rem 0;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: color .12s;
