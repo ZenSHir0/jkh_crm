@@ -23,5 +23,6 @@ public interface RequestRepository extends JpaRepository<Request, Long>, JpaSpec
     List<Request> findTop10ByResidentOrderByCreatedAtDesc(User resident);
     Page<Request> findByStatusAndType(RequestStatus status, RequestType type, Pageable pageable);
     Page<Request> findByMaster(User master, Pageable pageable);
+    long countByStatus(RequestStatus status);
 
 }

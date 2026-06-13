@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
 
 <!-- ══ RESIDENT HOME ══ -->
 <div th:fragment="resident">
@@ -119,19 +118,58 @@
     <div class="row g-4">
         <div class="col-lg-6">
             <div class="card home-card">
-                <a href="/admin/requests" class="action-btn-row">
-                    <div class="action-btn-icon"><i class="bi bi-clipboard-check"></i></div>
-                    <span class="action-btn-label">Все заявки</span>
-                    <span class="action-btn-label">Всего: 150, в работе: 130, новых: 16, отклонённых: 4</span>
-                    <i class="bi bi-chevron-right home-bi-arrow"></i>
-                </a>
+                    <a href="/admin/requests" class="action-btn-row">
+                        <div class="action-btn-icon"><i class="bi bi-clipboard-check"></i></div>
+                        <span class="action-btn-label">Все заявки</span>
+                        <div class="requests-chart-wrap">
+                            <div class="requests-chart-legend">
+                                <span>🔵 В работе: <strong th:text="${stats.inWorkCount}">0</strong></span>
+                                <span>🟢 Новые: <strong th:text="${stats.newCount}">0</strong></span>
+                                <span>🔴 Отклонённые: <strong th:text="${stats.rejectedCount}">0</strong></span>
+                            </div>
+                            <canvas id="requestsChart" class="requests-chart-canvas"
+                                    aria-label="Диаграмма заявок по статусам"></canvas>
+                        </div>
+                        <i class="bi bi-chevron-right home-bi-arrow"></i>
+                    </a>
             </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+            <script th:inline="javascript">
+                (function() {
+                    const ctx = document.getElementById('requestsChart');
+                    if (!ctx) return;
+                    const inWork = /*[[${stats.inWorkCount}]]*/ 0;
+                    const newCount = /*[[${stats.newCount}]]*/ 0;
+                    const rejected = /*[[${stats.rejectedCount}]]*/ 0;
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['В работе', 'Новые', 'Отклонённые'],
+                            datasets: [{
+                                data: [inWork, newCount, rejected],
+                                backgroundColor: ['#8B7FF5', '#1CC98F', '#D94545'],
+                                borderWidth: 2,
+                                borderColor: '#211F3E'
+                            }]
+                        },
+                        options: {
+                            cutout: '65%',
+                            responsive: false,
+                            plugins: { legend: { display: false }, tooltip: { enabled: true } }
+                        }
+                    });
+                })();
+            </script>
         </div>
         <div class="col-lg-6">
             <div class="card home-card">
                 <a href="/admin/dashboard" class="action-btn-row">
                     <div class="action-btn-icon"><i class="bi bi-people"></i></div>
-                    <span class="action-btn-label">Пользователи   Всего пользователей: 450</span>
+                    <span class="action-btn-label">Пользователи</span>
+                    <div class="card-stat-wrap ms-auto">
+                        <span class="card-stat-num" th:text="${stats.usersCount}">0</span>
+                        <span class="card-stat-sub">всего</span>
+                    </div>
                     <i class="bi bi-chevron-right home-bi-arrow"></i>
                 </a>
             </div>
@@ -140,7 +178,11 @@
             <div class="card home-card">
                 <a href="/admin/buildings" class="action-btn-row">
                     <div class="action-btn-icon"><i class="bi bi-buildings"></i></div>
-                    <span class="action-btn-label">Дома   всего: 10</span>
+                    <span class="action-btn-label">Дома</span>
+                    <div class="card-stat-wrap ms-auto">
+                        <span class="card-stat-num" th:text="${stats.buildingsCount}">0</span>
+                        <span class="card-stat-sub">всего</span>
+                    </div>
                     <i class="bi bi-chevron-right home-bi-arrow"></i>
                 </a>
             </div>
@@ -150,6 +192,9 @@
                 <a href="/profile" class="action-btn-row">
                     <div class="action-btn-icon"><i class="bi bi-person-gear"></i></div>
                     <span class="action-btn-label">Профиль</span>
+                    <div class="card-stat-wrap ms-auto">
+                        <span class="card-stat-sub">настройки</span>
+                    </div>
                     <i class="bi bi-chevron-right home-bi-arrow"></i>
                 </a>
             </div>
@@ -158,7 +203,11 @@
             <div class="card home-card">
                 <a href="/admin/news" class="action-btn-row">
                     <div class="action-btn-icon"><i class="bi bi-newspaper"></i></div>
-                    <span class="action-btn-label">Новости    размещённых: 19</span>
+                    <span class="action-btn-label">Новости</span>
+                    <div class="card-stat-wrap ms-auto">
+                        <span class="card-stat-num" th:text="${stats.newsCount}">0</span>
+                        <span class="card-stat-sub">всего</span>
+                    </div>
                     <i class="bi bi-chevron-right home-bi-arrow"></i>
                 </a>
             </div>
@@ -168,11 +217,12 @@
                 <a href="/admin/analitycs" class="action-btn-row">
                     <div class="action-btn-icon"><i class="bi bi-diagram-2"></i></div>
                     <span class="action-btn-label">Аналитика</span>
+                    <div class="card-stat-wrap ms-auto">
+                        <span class="card-stat-sub">отчёты</span>
+                    </div>
                     <i class="bi bi-chevron-right home-bi-arrow"></i>
                 </a>
             </div>
         </div>
     </div>
 </div>
-
-</html>

@@ -14,6 +14,7 @@ import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
 import rccl.diploma.crm.services.EmailService;
+import rccl.diploma.crm.services.StatsService;
 import rccl.diploma.crm.services.VerificationTokenService;
 
 import java.util.Optional;
@@ -25,13 +26,15 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final VerificationTokenService verificationTokenService;
     private final EmailService emailService;
+    private final StatsService statsService;
 
     public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                          VerificationTokenService verificationTokenService, EmailService emailService) {
+                          VerificationTokenService verificationTokenService, EmailService emailService, StatsService statsService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenService = verificationTokenService;
         this.emailService = emailService;
+        this.statsService = statsService;
     }
 
     private boolean isAuthenticated() {
@@ -131,8 +134,13 @@ public class AuthController {
 
     @GetMapping("/home")
     public String afterLogin(Authentication authentication, Model model) {
-        userRepository.findByUsername(authentication.getName())
-                .ifPresent(u -> model.addAttribute("user", u));
+        Optional<User> user = userRepository.findByUsername(authentication.getName());
+        user.ifPresent( _ -> model.addAttribute("user", user.get()));
+
+        if (user.get().getRole() == Role.ADMIN) {
+            model.addAttribute("stats", statsService.getStats());
+        }
+
         return "home";
     }
 }
