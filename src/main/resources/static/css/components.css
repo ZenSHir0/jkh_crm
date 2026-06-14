@@ -702,13 +702,17 @@
   display: flex;
   align-items: center;
   gap: .75rem;
-  padding: 1.75rem 0;
-  min-height: 128px;
+  padding: .75rem 0;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: color .12s;
   text-decoration: none;
   color: var(--navy2);
+}
+
+.action-btn-row.home {
+  min-height: 128px;
+  padding: 1.75rem 0;
 }
 
 .action-btn-row:last-child { border-bottom: none; }
