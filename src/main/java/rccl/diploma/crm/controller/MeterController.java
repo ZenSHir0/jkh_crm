@@ -38,7 +38,7 @@ public class MeterController {
         User user = getUser(authentication);
 
         LocalDate currentPeriod = LocalDate.now().withDayOfMonth(1);
-        String raw = currentPeriod.format(DateTimeFormatter.ofPattern("MMMM yyyy", new Locale("ru")));
+        String raw = currentPeriod.format(DateTimeFormatter.ofPattern("MMMM yyyy", Locale.of("ru")));
         String periodDisplay = Character.toUpperCase(raw.charAt(0)) + raw.substring(1);
 
         // Типы, уже переданные за текущий период
