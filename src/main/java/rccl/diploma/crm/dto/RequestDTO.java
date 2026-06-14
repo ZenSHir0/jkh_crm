@@ -2,10 +2,7 @@ package rccl.diploma.crm.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import rccl.diploma.crm.entity.enums.RequestType;
 
@@ -24,5 +21,7 @@ public class RequestDTO {
     @NotNull(message = "Тип заявки не может быть пустым")
     private RequestType type;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private MultipartFile[] photos;
 }
