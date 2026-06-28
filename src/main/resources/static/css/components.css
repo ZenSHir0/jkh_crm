@@ -786,6 +786,75 @@
 
 .profile-role { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
 
+/* ============================================================
+   NEWS BLOCK
+   ============================================================ */
+.news-widget {
+  margin-top: 1.5rem;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.news-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color .15s;
+  text-decoration: none;
+}
+
+.news-card:hover {
+  border-color: rgba(139, 127, 245, .4);
+}
+
+.news-card-tag {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.news-card-title {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.news-card-desc {
+  font-size: .78rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+.news-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.news-card-date {
+  font-size: .7rem;
+  color: var(--muted);
+}
 
 /* ============================================================
    ACTIONS PANEL (request details sidebar)
