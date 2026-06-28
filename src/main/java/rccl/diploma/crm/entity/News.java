@@ -3,6 +3,7 @@ package rccl.diploma.crm.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +21,16 @@ public class News {
     private long id;
 
     @Column
-    private String name;
+    private String title;
 
     @Column
     private String description;
+
+    @Column
+    private LocalDateTime validUntil;
+
+    @Column
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NewsPhoto> photos = new ArrayList<>();

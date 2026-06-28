@@ -14,6 +14,7 @@ import rccl.diploma.crm.entity.enums.Role;
 import rccl.diploma.crm.entity.User;
 import rccl.diploma.crm.repository.UserRepository;
 import rccl.diploma.crm.services.EmailService;
+import rccl.diploma.crm.services.NewsService;
 import rccl.diploma.crm.services.StatsService;
 import rccl.diploma.crm.services.VerificationTokenService;
 
@@ -27,14 +28,16 @@ public class AuthController {
     private final VerificationTokenService verificationTokenService;
     private final EmailService emailService;
     private final StatsService statsService;
+    private final NewsService newsService;
 
     public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                          VerificationTokenService verificationTokenService, EmailService emailService, StatsService statsService) {
+                          VerificationTokenService verificationTokenService, EmailService emailService, StatsService statsService, NewsService newsService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verificationTokenService = verificationTokenService;
         this.emailService = emailService;
         this.statsService = statsService;
+        this.newsService = newsService;
     }
 
     private boolean isAuthenticated() {
@@ -139,6 +142,9 @@ public class AuthController {
 
         if (user.get().getRole() == Role.ADMIN) {
             model.addAttribute("stats", statsService.getStats());
+        }
+        if (user.get().getRole() == Role.RESIDENT) {
+            model.addAttribute("newsList", newsService.getNewsList());
         }
 
         return "home";
