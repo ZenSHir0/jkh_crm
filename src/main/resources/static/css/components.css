@@ -262,8 +262,20 @@
   transition: background .1s;
 }
 
+.req-row--admin { grid-template-columns: 44px 1fr 120px 120px 100px 80px; }
+.req-row--news  { grid-template-columns: 44px 1fr 130px 110px 80px; }
+
+.req-empty      { padding: 3rem 1.25rem; text-align: center; color: var(--muted); }
+.req-empty-icon { font-size: 2rem; margin-bottom: .5rem; opacity: .4; }
+.req-empty-text { margin: 0; font-size: .875rem; }
+
 .req-row:last-child { border-bottom: none; }
 .req-row:hover { background: rgba(255,255,255,.03); }
+
+.req-master        { font-size: .82rem; font-weight: 700; color: var(--navy2); }
+.req-master--empty { color: var(--muted); font-style: italic; }
+
+.req-actions { display: flex; justify-content: flex-end; }
 
 .th-row {
   background: rgba(255,255,255,.04) !important;

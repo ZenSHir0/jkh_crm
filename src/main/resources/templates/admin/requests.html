@@ -68,8 +68,7 @@
 
   <!-- Table -->
   <div class="card">
-    <div class="req-row th-row"
-         style="grid-template-columns:44px 1fr 120px 120px 100px 80px">
+    <div class="req-row th-row req-row--admin">
       <span class="col-hdr">№</span>
       <span class="col-hdr">Заявка</span>
       <span class="col-hdr">Мастер</span>
@@ -78,16 +77,15 @@
       <span></span>
     </div>
 
-    <div th:if="${requests.isEmpty()}"
-         style="padding:3rem 1.25rem;text-align:center;color:var(--muted)">
-      <div style="font-size:2rem;margin-bottom:.5rem;opacity:.4"><i class="bi bi-clipboard-x"></i></div>
-      <p style="margin:0;font-size:.875rem">Заявок не найдено</p>
+    <div th:if="${requests.isEmpty()}" class="req-empty">
+      <div class="req-empty-icon"><i class="bi bi-clipboard-x"></i></div>
+      <p class="req-empty-text">Заявок не найдено</p>
     </div>
 
     <div th:each="request : ${requests}"
-         class="req-row"
-         style="grid-template-columns:44px 1fr 120px 120px 100px 80px"
+         class="req-row req-row--admin"
          th:onclick="|location.href='/admin/requests/${request.id}'|">
+
       <span class="req-num" th:text="'#' + ${request.id}"></span>
 
       <div>
@@ -96,19 +94,21 @@
              th:text="${request.type.displayName + ' · ' + request.resident.fullName}"></div>
       </div>
 
-      <span style="font-size:.82rem;font-weight:700;color:var(--navy2)"
-            th:text="${request.master?.fullName ?: '—'}"
-            th:style="${request.master == null} ? 'color:var(--muted);font-style:italic' : ''"></span>
+      <span class="req-master"
+            th:classappend="${request.master == null} ? 'req-master--empty'"
+            th:text="${request.master?.fullName ?: '—'}"></span>
 
-      <span class="status" th:classappend="${request.status.badgeClass}"
+      <span class="status"
+            th:classappend="${request.status.badgeClass}"
             th:text="${request.status.displayName}"></span>
 
       <span class="req-date"
             th:text="${#temporals.format(request.createdAt, 'dd.MM.yyyy')}"></span>
 
-      <div style="display:flex;justify-content:flex-end">
+      <div class="req-actions">
         <a th:href="@{/admin/requests/{id}(id=${request.id})}"
-           class="btn-ghost btn-sm" onclick="event.stopPropagation()">Детали</a>
+           class="btn-ghost btn-sm"
+           onclick="(e => e.stopPropagation())(event)">Детали</a>
       </div>
     </div>
   </div>
