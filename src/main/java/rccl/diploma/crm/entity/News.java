@@ -2,6 +2,7 @@ package rccl.diploma.crm.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import rccl.diploma.crm.entity.enums.NewsCategory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column
+    private NewsCategory category;
 
     @Column
     private String title;
