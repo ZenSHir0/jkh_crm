@@ -561,7 +561,6 @@ public class DataInitializer {
                         .title((String) NEWS_DATA[i][0])
                         .description((String) NEWS_DATA[i][1])
                         .category((NewsCategory) NEWS_DATA[i][2])
-                        .createdAt(created)
                         .validUntil(created.plusDays(14 + rnd.nextInt(30)))
                         .build());
             }

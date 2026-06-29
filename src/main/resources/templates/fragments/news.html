@@ -4,15 +4,12 @@
         <div th:each="item : ${newsList}"
              class="news-card"
              th:onclick="|location.href='/news/${item.id}'|">
-<!--            <span class="news-card-tag" th:text="${item.category.displayName}">Объявление</span>-->
+            <span class="news-card-tag" th:text="${item.category.displayName}">Объявление</span>
             <p class="news-card-title" th:text="${item.title}">Заголовок новости</p>
             <p class="news-card-desc" th:text="${item.description}">Описание</p>
             <div class="news-card-footer">
-        <span class="news-card-date"
-              th:text="${#temporals.format(item.createdAt, 'dd MMM', new java.util.Locale('ru'))}">
-          20 июн
-        </span>
-                <span class="news-card-arrow">→</span>
+                <span class="news-card-date">Cоздано: <span th:text="${#temporals.format(item.createdAt, 'dd MMM', new java.util.Locale('ru'))}"></span></span>
+                <span class="news-card-date">Истекает: <span th:text="${#temporals.format(item.validUntil, 'dd MMM', new java.util.Locale('ru'))}"></span></span>
             </div>
         </div>
     </div>

@@ -144,7 +144,7 @@ public class AuthController {
             model.addAttribute("stats", statsService.getStats());
         }
         if (user.get().getRole() == Role.RESIDENT) {
-            model.addAttribute("newsList", newsService.getNewsList());
+            model.addAttribute("newsList", newsService.getRecentNews());
         }
 
         return "home";

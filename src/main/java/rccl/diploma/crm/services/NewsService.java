@@ -1,7 +1,6 @@
 package rccl.diploma.crm.services;
 
 import org.springframework.stereotype.Service;
-import rccl.diploma.crm.dto.NewsDTO;
 import rccl.diploma.crm.entity.News;
 import rccl.diploma.crm.repository.NewsRepository;
 
@@ -15,7 +14,9 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public List<News> getNewsList() {
-        return newsRepository.findAll();
+    public List<News> getAllNews() {
+        return newsRepository.findAllByOrderByValidUntilDesc();
     }
+    public List<News> getRecentNews() { return newsRepository.findTop10ByIsValidTrueOrderByValidUntilDesc(); }
+
 }

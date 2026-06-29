@@ -22,6 +22,10 @@ public class News {
     private long id;
 
     @Column
+    @Builder.Default
+    private Boolean isValid = true;
+
+    @Column
     private NewsCategory category;
 
     @Column
@@ -34,6 +38,7 @@ public class News {
     private LocalDateTime validUntil;
 
     @Column
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,5 +49,9 @@ public class News {
             photos.add(photo);
             photo.setNews(this);
         }
+    }
+
+    public void toggleValid() {
+        isValid = !isValid;
     }
 }
