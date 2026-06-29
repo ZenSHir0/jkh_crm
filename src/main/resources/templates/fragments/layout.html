@@ -44,6 +44,11 @@
              th:classappend="${currentUri != null and currentUri.startsWith('/admin/buildings')} ? ' active' : ''"
              href="/admin/buildings">Дома</a>
         </li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link"
+             th:classappend="${currentUri != null and currentUri.startsWith('/admin/news')} ? ' active' : ''"
+             href="/admin/news">Новости</a>
+        </li>
 
         <!-- ═══ MASTER ═══ -->
         <li class="nav-item" sec:authorize="hasRole('MASTER')">
